@@ -74,6 +74,12 @@ namespace DAT154_Libs {
 
     [Table(Name = "booking")]
     public class Booking {
+        public readonly int STATUS_CANCELED = -1;
+        public readonly int STATUS_BOOKED = 0;
+        public readonly int STATUS_PAID = 1;
+        public readonly int STATUS_CHECKEDIN = 2;
+        public readonly int STATUS_COMPLETE = 3;
+
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
         public int id { get; set; }
 
@@ -91,5 +97,23 @@ namespace DAT154_Libs {
 
         [Column(CanBeNull = false)]
         public int booking_status { get; set; }
+    }
+
+    [Table(Name = "task")]
+    public class Task {
+        [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
+        public int id { get; set; }
+
+        [Column(CanBeNull = false)]
+        public int room_id { get; set; }
+
+        [Column(CanBeNull = false)]
+        public int status { get; set; }
+
+        [Column(CanBeNull = false)]
+        public int category { get; set; }
+
+        [Column(CanBeNull = false)]
+        public string notes { get; set; }
     }
 }

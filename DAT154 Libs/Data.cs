@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Data.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace DAT154_Libs {
     public class Data {
@@ -16,8 +17,21 @@ namespace DAT154_Libs {
             ";Password=" + pass);
 
         /*
-        * Room functions
-        */
+         * Saving data to database
+         */
+
+        public static void save() {
+            cont.SubmitChanges();
+        }
+
+        public static void insert(User user) {
+            Table<User> tbl = cont.GetTable<User>();
+            tbl.InsertOnSubmit(user);
+        }
+
+        /*
+         * Room functions
+         */
 
         public static Room getRoomById(int id) {
             Table<Room> tbl = cont.GetTable<Room>();
@@ -48,7 +62,9 @@ namespace DAT154_Libs {
             int minSize = -1,
             int maxSize = -1,
             int minQuality = -1,
-            int maxQuality = -1
+            int maxQuality = -1,
+            DateTime? startDate = null,
+            DateTime? endDate = null
         ) {
             Table<Room> tbl = cont.GetTable<Room>();
             var query = from room in tbl select room;
@@ -60,12 +76,27 @@ namespace DAT154_Libs {
             if (minQuality >= 0) query = from room in query where room.quality >= minQuality select room;
             if (maxQuality >= 0) query = from room in query where room.quality <= maxQuality select room;
 
-            return query.ToList<Room>();
+            List<Room> rooms = query.ToList<Room>();
+
+            if (startDate != null && endDate != null) {
+                Table<Booking> bookingTbl = cont.GetTable<Booking>();
+                var bookingQuery =
+                    from booking in bookingTbl
+                    where booking.start_date < endDate
+                    where booking.end_date > startDate
+                    select booking.room_id;
+
+                List<int> bookedRooms = bookingQuery.ToList<int>();
+
+                rooms = rooms.Where(room => !bookedRooms.Contains(room.id)).ToList<Room>();
+            }
+
+            return rooms;
         }
 
         /*
-        * User functions
-        */
+         * User functions
+         */
 
         public static User getUserById(int id) {
             Table<User> tbl = cont.GetTable<User>();
@@ -89,6 +120,14 @@ namespace DAT154_Libs {
             return result.First<User>();
         }
 
+        public static List<User> getUsersByName(string name) {
+            Table<User> tbl = cont.GetTable<User>();
+
+            var result = from user in tbl where user.name == name select user;
+
+            return result.ToList<User>();
+        }
+
         public static List<User> getAllUsers() {
             Table<User> tbl = cont.GetTable<User>();
 
@@ -96,12 +135,44 @@ namespace DAT154_Libs {
             return result.ToList<User>();
         }
 
-        public static void saveUser(User user) {
-            if (user.id == 0) {
-                Table<User> tbl = cont.GetTable<User>();
-                tbl.InsertOnSubmit(user);
-            }
-            cont.SubmitChanges();
+        /*
+         * Booking functions
+         */
+
+        public static List<Booking> getBookings(
+            User user = null,
+            Room room = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        ) {
+            Table<Booking> tbl = cont.GetTable<Booking>();
+
+            var query = from booking in tbl select booking;
+
+            if (user != null) query = from booking in query where booking.user_id == user.id select booking;
+            if (room != null) query = from booking in query where booking.room_id == room.id select booking;
+            if (startDate != null && endDate != null) query = from booking in query where booking.start_date < endDate where booking.end_date > startDate select booking;
+
+            return query.ToList<Booking>();
         }
+
+        public static Booking bookRoom(User user, Room room, DateTime startDate, DateTime endDate) {
+            Booking booking = new Booking();
+            booking.user_id = user.id;
+            booking.room_id = room.id;
+            booking.start_date = startDate;
+            booking.end_date = endDate;
+            Table<Booking> tbl = cont.GetTable<Booking>();
+            tbl.InsertOnSubmit(booking);
+            cont.SubmitChanges();
+
+            return booking;
+        }
+
+        /*
+         * Task functions
+         */
+
+        // Create task
     }
 }
