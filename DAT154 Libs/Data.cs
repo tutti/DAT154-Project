@@ -29,6 +29,11 @@ namespace DAT154_Libs {
             tbl.InsertOnSubmit(user);
         }
 
+        public static void insert(Task task) {
+            Table<Task> tbl = cont.GetTable<Task>();
+            tbl.InsertOnSubmit(task);
+        }
+
         /*
          * Room functions
          */
@@ -56,7 +61,7 @@ namespace DAT154_Libs {
             return result.First<Room>();
         }
 
-        public static List<Room> getRoomsByCriteria(
+        public static List<Room> getRooms(
             int minBeds = -1,
             int maxBeds = -1,
             int minSize = -1,
@@ -139,6 +144,17 @@ namespace DAT154_Libs {
          * Booking functions
          */
 
+        public static Booking getBookingById(int id) {
+            Table<Booking> tbl = cont.GetTable<Booking>();
+
+            var result = from booking in tbl where booking.id == id select booking;
+
+            if (result.Count<Booking>() == 0) {
+                return null;
+            }
+            return result.First<Booking>();
+        }
+
         public static List<Booking> getBookings(
             User user = null,
             Room room = null,
@@ -173,6 +189,29 @@ namespace DAT154_Libs {
          * Task functions
          */
 
-        // Create task
+        public static Task getTaskById(int id) {
+            Table<Task> tbl = cont.GetTable<Task>();
+
+            var result = from task in tbl where task.id == id select task;
+
+            if (result.Count<Task>() == 0) {
+                return null;
+            }
+            return result.First<Task>();
+        }
+
+        public static List<Task> getTasks(Room room = null, int? status = null, int? category = null) {
+            Table<Task> tbl = cont.GetTable<Task>();
+
+            var query = from task in tbl select task;
+
+            if (room != null) query = from task in query where task.room_id == room.id select task;
+            if (status != null) query = from task in query where task.status == status select task;
+            if (category != null) {
+                query = query.Where(task => (task.category & category) == category);
+            }
+
+            return query.ToList<Task>();
+        }
     }
 }

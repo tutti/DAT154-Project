@@ -49,12 +49,23 @@ namespace DAT154_Libs
                 Console.WriteLine(booking.end_date);
                 Console.WriteLine();
             }
-            */
 
             User user = Data.getUserById(1);
             Room room = Data.getRoomById(1);
             Data.bookRoom(user, room, DateTime.Parse("2017-02-01"), DateTime.Parse("2017-02-28"));
             Console.WriteLine("Done");
+
+            Task task1 = new Task();
+            task1.room_id = 1;
+            task1.category = Task.CATEGORY.MAINTENANCE | Task.CATEGORY.LEGAL;
+            Data.insert(task1);
+            Data.save();
+            */
+
+            List<Task> tasks = Data.getTasks(category: Task.CATEGORY.MAINTENANCE);
+            foreach (Task task in tasks) {
+                Console.WriteLine("{0} {1}", task.id, task.category);
+            }
 
             Console.ReadKey();
         }

@@ -74,11 +74,13 @@ namespace DAT154_Libs {
 
     [Table(Name = "booking")]
     public class Booking {
-        public readonly int STATUS_CANCELED = -1;
-        public readonly int STATUS_BOOKED = 0;
-        public readonly int STATUS_PAID = 1;
-        public readonly int STATUS_CHECKEDIN = 2;
-        public readonly int STATUS_COMPLETE = 3;
+        public class STATUS {
+            public static readonly int CANCELED = -1;
+            public static readonly int BOOKED = 0;
+            public static readonly int PAID = 1;
+            public static readonly int CHECKEDIN = 2;
+            public static readonly int COMPLETE = 3;
+        }
 
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
         public int id { get; set; }
@@ -101,6 +103,20 @@ namespace DAT154_Libs {
 
     [Table(Name = "task")]
     public class Task {
+        public class STATUS {
+            public static readonly int CANCELED = -1;
+            public static readonly int ASSIGNED = 0;
+            public static readonly int COMPLETED = 1;
+        }
+
+        public class CATEGORY {
+            public static readonly int CLEANING = 1;
+            public static readonly int SERVICE = 2;
+            public static readonly int MAINTENANCE = 4;
+            public static readonly int LEGAL = 8;
+            public static readonly int EXORCISM = 16;
+        }
+
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
         public int id { get; set; }
 
@@ -115,5 +131,9 @@ namespace DAT154_Libs {
 
         [Column(CanBeNull = false)]
         public string notes { get; set; }
+
+        public bool isCategory(int category) {
+            return (this.category & category) == category;
+        }
     }
 }
