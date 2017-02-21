@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="c3df9bc4-4f7e-4a23-a87b-cdbd14fc2287"
+    Name="fd3f8db4-24f6-4428-9ce2-6df25e3ff7ed"
     Publisher="CN=Magnar"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="c3df9bc4-4f7e-4a23-a87b-cdbd14fc2287" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="fd3f8db4-24f6-4428-9ce2-6df25e3ff7ed" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>DAT154 Universal</DisplayName>
