@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FakeData.cs" />
     <Compile Include="Service.xaml.cs">
       <DependentUpon>Service.xaml</DependentUpon>
     </Compile>
@@ -122,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAT154 Libs\DAT154 Libs.csproj">
+      <Project>{a70d33ca-d518-4afc-958c-717ba4fddcb4}</Project>
+      <Name>DAT154 Libs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
