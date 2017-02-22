@@ -104,19 +104,19 @@ namespace DAT154_Libs {
     [Table(Name = "task")]
     public class Task {
         public class STATUS {
-            public static readonly int CANCELED = -1;
-            public static readonly int NEW = 0;
-            public static readonly int ASSIGNED = 1;
-            public static readonly int COMPLETED = 2;
+            public static readonly int CANCELED = 1;
+            public static readonly int NEW = 2;
+            public static readonly int ASSIGNED = 4;
+            public static readonly int COMPLETED = 8;
         }
 
         public class CATEGORY {
             public static readonly int CLEANING = 1;
             public static readonly int SERVICE = 2;
-            public static readonly int MAINTENANCE = 3;
-            public static readonly int CONCIERGENCE = 4;
-            public static readonly int LEGAL = 8;
-            public static readonly int EXORCISM = 16;
+            public static readonly int MAINTENANCE = 4;
+            public static readonly int CONCIERGENCE = 8;
+            public static readonly int LEGAL = 16;
+            public static readonly int EXORCISM = 32;
         }
 
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
@@ -136,6 +136,14 @@ namespace DAT154_Libs {
 
         public bool isCategory(int category) {
             return (this.category & category) == category;
+        }
+
+        public void addCategory(int category) {
+            this.category |= category;
+        }
+
+        public void removeCategory(int category) {
+            this.category &= ~category;
         }
     }
 }
