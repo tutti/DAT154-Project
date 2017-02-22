@@ -19,8 +19,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding room_id}" Width="50" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding }"
+                            <!--<TextBlock Text="{Binding room.room_number}"/>-->
+                            <TextBlock Text="{Binding status}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
