@@ -18,7 +18,10 @@
             <ListView Name="TaskList">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding room_id}" Width="50" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding }"
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -113,10 +113,10 @@ namespace DAT154_Libs {
         public class CATEGORY {
             public static readonly int CLEANING = 1;
             public static readonly int SERVICE = 2;
-            public static readonly int MAINTENANCE = 3;
-            public static readonly int CONCIERGENCE = 4;
-            public static readonly int LEGAL = 8;
-            public static readonly int EXORCISM = 16;
+            public static readonly int MAINTENANCE = 4;
+            public static readonly int CONCIERGENCE = 8;
+            public static readonly int LEGAL = 16;
+            public static readonly int EXORCISM = 32;
         }
 
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
