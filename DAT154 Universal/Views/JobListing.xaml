@@ -9,20 +9,19 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ComboBox x:Name="job_type_list" Height="30">
-            <ComboBoxItem Name="maintainer">Maintainer</ComboBoxItem>
-            <ComboBoxItem Name="cleaner">Cleaner</ComboBoxItem>
-            <ComboBoxItem Name="service">Service</ComboBoxItem>
+            <ComboBoxItem Name="maintainer">Cleaner</ComboBoxItem>
+            <ComboBoxItem Name="cleaner">Service</ComboBoxItem>
+            <ComboBoxItem Name="service">Maintainer</ComboBoxItem>
         </ComboBox>
         <StackPanel Orientation="Vertical" VerticalAlignment="Top">
             <TextBlock Text="Jobs available for *insert jobtype here*" FontSize="21" TextAlignment="Center"/>
-            <!--<ListView>
-                <ItemsControl>
-                    <ItemsControl.ItemsSource=""></ItemsControl.ItemsSource>
+            <ListView Name="TaskList">
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="Room Number"></TextBlock>
+                        
                     </DataTemplate>
-                </ItemsControl>
-            </ListView>-->
+                </ListView.ItemTemplate>
+            </ListView>
         </StackPanel>
     </Grid>
 </Page>

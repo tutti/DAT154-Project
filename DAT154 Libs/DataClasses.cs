@@ -105,14 +105,16 @@ namespace DAT154_Libs {
     public class Task {
         public class STATUS {
             public static readonly int CANCELED = -1;
-            public static readonly int ASSIGNED = 0;
-            public static readonly int COMPLETED = 1;
+            public static readonly int NEW = 0;
+            public static readonly int ASSIGNED = 1;
+            public static readonly int COMPLETED = 2;
         }
 
         public class CATEGORY {
             public static readonly int CLEANING = 1;
             public static readonly int SERVICE = 2;
-            public static readonly int MAINTENANCE = 4;
+            public static readonly int MAINTENANCE = 3;
+            public static readonly int CONCIERGENCE = 4;
             public static readonly int LEGAL = 8;
             public static readonly int EXORCISM = 16;
         }
