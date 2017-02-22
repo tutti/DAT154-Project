@@ -23,5 +23,12 @@ namespace DAT154_Universal.Views {
         public Login() {
             this.InitializeComponent();
         }
+
+        private void PassportSignInButton_Click(object sender, RoutedEventArgs e) {
+            ErrorMessage.Text = "User not found";
+        }
+        private void RegisterButtonTextBlock_OnPointerPressed(object sender, PointerRoutedEventArgs e) {
+            Frame.Navigate(typeof(JobListing));
+        }
     }
 }
