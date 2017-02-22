@@ -12,16 +12,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace DAT154_Desktop {
     /// <summary>
     /// Interaction logic for Booking.xaml
     /// </summary>
     public partial class Booking : Page {
+        ObservableCollection<DAT154_Libs.Booking> bookings;
         public Booking() {
             InitializeComponent();
+
+            bookings = new ObservableCollection<DAT154_Libs.Booking>();
+            foreach (DAT154_Libs.Booking booking in FakeData.getBookings()) {
+                bookings.Add(booking);
+            }
+            bookingList.ItemsSource = bookings;
         }
 
+        private void addButtonClick(object sender, RoutedEventArgs e) {
+            newbookingPopup.IsOpen = true;
+        }
         private void closeBooking(object sender, MouseButtonEventArgs e) {
             newbookingPopup.IsOpen = false;
         }

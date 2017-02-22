@@ -43,8 +43,6 @@ namespace DAT154_Desktop
 
             //Booking menu
             booking.mainmenuButton.Click += new RoutedEventHandler(mainmenuButtonClick);
-            booking.addBookingButton.Click += new RoutedEventHandler(addbookingButtonClick);
-
             booking.bookButton.Click += new RoutedEventHandler(bookButtonClick);
 
             //Service menu
@@ -82,9 +80,6 @@ namespace DAT154_Desktop
             goLogin();
         }
 
-        public void addbookingButtonClick(object sender, EventArgs e) {
-            booking.newbookingPopup.IsOpen = true;
-        }
 
         public void bookButtonClick(object sender, EventArgs e) {
             if (doBook()) {

@@ -42,10 +42,24 @@
         </Popup>
 
         <Label DockPanel.Dock="Top" Content="Service"></Label>
-        <Button DockPanel.Dock="Top" Margin="10,10" Content="Add task" Name="addTaskButton"></Button>
+        <Button DockPanel.Dock="Top" Margin="10,10" Content="Add task" Name="addTaskButton" Click="addButtonClick"></Button>
         <Label DockPanel.Dock="Top" Margin="10,0" Content="Filter by room"></Label>
         <TextBox DockPanel.Dock="Top" Margin="10,0"></TextBox>
         <Button DockPanel.Dock="Bottom" Margin="10,10" Content="Main menu" Name="mainmenuButton"></Button>
-        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="taskList"></ListBox>
+        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="taskList" ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="Task "/>
+                        <Run Text="{Binding id}"/>
+                        <Run Text=" at Room "/>
+                        <Run Text="{Binding room_id}"/>
+                        <Run Text=" of category "/>
+                        <Run Text="{Binding category}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+        </ListBox>
     </DockPanel>
 </Page>

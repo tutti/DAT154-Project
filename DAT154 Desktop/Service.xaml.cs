@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using DAT154_Libs;
 
 namespace DAT154_Desktop {
     /// <summary>
@@ -19,8 +21,20 @@ namespace DAT154_Desktop {
     /// </summary>
     public partial class Service : Page {
 
+        ObservableCollection<DAT154_Libs.Task> tasks;
+
         public Service() {
             InitializeComponent();
+
+            tasks = new ObservableCollection<DAT154_Libs.Task>();
+            foreach (DAT154_Libs.Task task in FakeData.getTasks()) {
+                tasks.Add(task);
+            }
+            taskList.ItemsSource = tasks;
+        }
+
+        private void addButtonClick(object sender, RoutedEventArgs e) {
+            newPopup.IsOpen = true;
         }
 
         private void closeNew(object sender, MouseButtonEventArgs e) {

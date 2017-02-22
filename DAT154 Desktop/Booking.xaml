@@ -30,7 +30,7 @@
             </StackPanel>
         </Popup>
         <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Content="Booking"></Label>
-        <Button DockPanel.Dock="Top" Margin="10,10" Content="Add booking" Name="addBookingButton"></Button>
+        <Button DockPanel.Dock="Top" Margin="10,10" Content="Add booking" Name="addBookingButton" Click="addButtonClick"></Button>
         <Label DockPanel.Dock="Top" Margin="10,0" HorizontalAlignment="Center" Content="Filter by name"></Label>
         <TextBox DockPanel.Dock="Top" Margin="10,0" ></TextBox>
         <Button DockPanel.Dock="Bottom" Margin="10,10" Content="Main menu" Name="mainmenuButton"></Button>
@@ -41,6 +41,22 @@
             <Button HorizontalAlignment="Right" Margin="5,10" Content="Check out"/>
         </StackPanel>
         
-        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="bookingList"></ListBox>
+        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="bookingList">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding user_id}"/>
+                        <Run Text=" has Room "/>
+                        <Run Text="{Binding room_id}"/>
+                        <Run Text=" from "/>
+                        <Run Text="{Binding start_date}"/>
+                        <Run Text=" to "/>
+                        <Run Text="{Binding end_date}"/>
+                        <Run Text=" - Status: "/>
+                        <Run Text="{Binding booking_status}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </Page>
