@@ -20,14 +20,18 @@ namespace DAT154_Desktop {
     /// </summary>
     public partial class Booking : Page {
         ObservableCollection<DAT154_Libs.Booking> bookings;
+        ObservableCollection<DAT154_Libs.Room> rooms;
         public Booking() {
             InitializeComponent();
 
             bookings = new ObservableCollection<DAT154_Libs.Booking>();
+            rooms = new ObservableCollection<DAT154_Libs.Room>();
             foreach (DAT154_Libs.Booking booking in FakeData.getBookings()) {
                 bookings.Add(booking);
             }
+
             bookingList.ItemsSource = bookings;
+            roomList.ItemsSource = rooms;
         }
 
         private void addButtonClick(object sender, RoutedEventArgs e) {

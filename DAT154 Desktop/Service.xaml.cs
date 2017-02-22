@@ -25,6 +25,8 @@ namespace DAT154_Desktop {
 
         public Service() {
             InitializeComponent();
+            
+            taskList.MouseDoubleClick += taskClicked;
 
             tasks = new ObservableCollection<DAT154_Libs.Task>();
             foreach (DAT154_Libs.Task task in FakeData.getTasks()) {
@@ -48,13 +50,22 @@ namespace DAT154_Desktop {
         }
 
         private void closeView(object sender, MouseButtonEventArgs e) {
-            newPopup.IsOpen = false;
+            viewPopup.IsOpen = false;
         }
         private void viewmouseoverX(object sender, MouseEventArgs e) {
             viewpopupexitButton.Background = new SolidColorBrush() { Color = Colors.Red };
         }
         private void viewmouseleaveX(object sender, MouseEventArgs e) {
             viewpopupexitButton.Background = new SolidColorBrush() { Color = Colors.AliceBlue };
+        }
+
+        private void taskClicked(object sender, MouseButtonEventArgs e) {
+            Console.WriteLine("clicked");
+            viewPopup.IsOpen = true;
+            DAT154_Libs.Task selectedTask = (DAT154_Libs.Task)taskList.SelectedItem;
+            viewroom.Content = selectedTask.room_id;
+            viewcategory.Content = selectedTask.category;
+            viewtext.Content = selectedTask.notes;
         }
     }
 }

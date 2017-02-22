@@ -15,31 +15,57 @@
                     x
                 </Label>
                 <Label HorizontalAlignment="Center" Content="Add booking"></Label>
-                <Label Content="Username of guest"></Label>
-                <TextBox Name="username"></TextBox>
-                <Label Content="Room size"></Label>
-                <ComboBox Name="roomsize"></ComboBox>
-                <Label Content="Room quality"></Label>
-                <ComboBox Name="roomquality"></ComboBox>
-                <Label Content="Start date"></Label>
-                <DatePicker Name="startdate"></DatePicker>
-                <Label Content="End date"></Label>
-                <DatePicker Name="enddate"></DatePicker>
-                <Button Content="Book" Name="bookButton"></Button>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Width="120" Margin="10,10">
+                        
+                        <Label Content="Username of guest"></Label>
+                        <TextBox Name="username"></TextBox>
+                        <Label Content="Room size"></Label>
+                        <ComboBox Name="roomsize"></ComboBox>
+                        <Label Content="Room quality"></Label>
+                        <ComboBox Name="roomquality"></ComboBox>
+                        <Label Content="Start date"></Label>
+                        <DatePicker Name="startdate"></DatePicker>
+                        <Label Content="End date"></Label>
+                        <DatePicker Name="enddate"></DatePicker>
+                        <Button Content="Search" Name="searchButton"></Button>
+                    </StackPanel>
+                    <DockPanel Grid.Column="1" Width="100" Margin="10,10" >
+                        <Button DockPanel.Dock="Bottom" Content="Book" Name="bookButton"></Button>
+                        <ListBox Name="roomList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding room_number}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Grid>
                 <Label Content="" Name="error" Foreground="Red"></Label>
             </StackPanel>
         </Popup>
         <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Content="Booking"></Label>
         <Button DockPanel.Dock="Top" Margin="10,10" Content="Add booking" Name="addBookingButton" Click="addButtonClick"></Button>
         <Label DockPanel.Dock="Top" Margin="10,0" HorizontalAlignment="Center" Content="Filter by name"></Label>
-        <TextBox DockPanel.Dock="Top" Margin="10,0" ></TextBox>
+        <TextBox DockPanel.Dock="Top" Margin="10,0" Name="nameFilter"></TextBox>
         <Button DockPanel.Dock="Bottom" Margin="10,10" Content="Main menu" Name="mainmenuButton"></Button>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button Margin="5,10" Content="Cancel"></Button>
-            <Button Margin="5,10" Content="Set open"></Button>
-            <Button Margin="5,10" Content="Check in"/>
-            <Button HorizontalAlignment="Right" Margin="5,10" Content="Check out"/>
-        </StackPanel>
+        <Grid Margin="10,10" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="5,10" Content="Cancel" Name="cancelButton"></Button>
+            <Button Grid.Column="1" Margin="5,10" Content="Set open" Name="openButton"></Button>
+            <Button Grid.Column="2" Margin="5,10" Content="Check in" Name="checkinButton"/>
+            <Button Grid.Column="3" Margin="5,10" Content="Check out" Name="checkoutButton"/>
+        </Grid>
         
         <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="bookingList">
             <ItemsControl.ItemTemplate>
