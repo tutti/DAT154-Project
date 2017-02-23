@@ -11,6 +11,8 @@ namespace DAT154_Libs
         static void Main(string[] args)
         {
             User user = Data.getUserByEmail("paalvaa@gmail.com");
+            user.password = "abc123";
+            Data.save();
             Console.WriteLine(user.email);
 
             Console.ReadKey();
