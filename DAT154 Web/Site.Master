@@ -59,9 +59,10 @@
                             <li><a href="/Login">Log in</a></li>
                         </ul>
                     </div>
-                    <% if (!username.Equals("")) { %><span style="color: white;">Hello, <%= username %></span> <% } %>
+                    <%--<% if (!username.Equals("")) { %><span style="display: inline-block; position: absolute; color: white; right: 320px; font-size: 1.3em; line-height: 50px;">Hello, <%= username %>!</span> <% } %> --%>
                     <div runat="server" id="usermenu">
                         <ul class="nav navbar-nav navbar-right">
+                            <li><span style="display: block; color: white; line-height: 50px;">Hello, <%= username %>!</span></li>
                             <li><a href="/Bookings">My bookings</a></li>
                             <li><a href="/Logout">Log out</a></li>
                         </ul>
