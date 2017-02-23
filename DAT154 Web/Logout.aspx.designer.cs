@@ -11,7 +11,7 @@ namespace DAT154_Web
 {
 
 
-    public partial class About
+    public partial class Logout
     {
     }
 }

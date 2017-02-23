@@ -7,11 +7,12 @@ using System.Web.UI.WebControls;
 
 namespace DAT154_Web
 {
-    public partial class About : Page
+    public partial class Logout : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Session.Abandon();
+            Response.Redirect("/");
         }
     }
 }
