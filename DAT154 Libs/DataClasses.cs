@@ -23,6 +23,16 @@ namespace DAT154_Libs {
 
     [Table(Name = "user")]
     public class User {
+        public class TYPE {
+            public static readonly int GUEST = 0;
+            public static readonly int CLEANER = 1;
+            public static readonly int SERVICE_PERSONNEL = 2;
+            public static readonly int MAINTAINER = 3;
+            public static readonly int CONCIERGE = 4;
+            public static readonly int LAWYER = 5;
+
+        }
+
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
         public int id { get; set; }
 
