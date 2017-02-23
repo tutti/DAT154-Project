@@ -20,13 +20,46 @@ namespace DAT154_Universal.Views {
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class JobListing : Page {
-        List<MockTasks> a;
+        List<TaskView> a;
         public JobListing() {
             this.InitializeComponent();
-            a = new List<MockTasks>();
-            a.Add(new MockTasks(1, 1, 0, 1, ""));
-            a.Add(new MockTasks(2, 404, -1, 16, ""));
+            a = new List<TaskView>();
+            a.Add(new TaskView(1, 1, 0, 1, ""));
+            a.Add(new TaskView(2, 404, -1, 16, ""));
             TaskList.ItemsSource = a;
+        }
+    }
+    public class TaskView {
+        public MockTasks task { get; set; }
+        public MockRoom room { get; set; }
+
+        public string status { get; set; }
+        public TaskView(int _id, int _room_id, int _status, int _category, string _notes) {
+            task = new MockTasks(_id, _room_id, _status, _category, _notes);
+            room = new MockRoom(_room_id);
+            switch(task.status){
+                case -1:
+                    status = "Canceled";
+                    break;
+                case 0:
+                    status = "New";
+                    break;
+                case 1:
+                    status = "Assigned";
+                    break;
+                case 2:
+                    status = "Completed";
+                    break;
+            }
+        }
+    }
+
+    public class MockRoom {
+        public int room_id { get; set; }
+        public int room_number { get; set; }
+        public MockRoom(int _room_id) {
+            room_id = _room_id;
+            room_number = _room_id;
         }
     }
     public class MockTasks {
