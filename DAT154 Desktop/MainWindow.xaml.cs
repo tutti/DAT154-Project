@@ -154,11 +154,8 @@ namespace DAT154_Desktop
             string username = login.usernameInput.Text;
             string password = login.passwordInput.Password;
 
-            //DAT154_Libs.Data.login(username, password);
-            //The above should return a boolean or a user object
-
-            //Temp code to prevent errors
-            return true;
+            DAT154_Libs.User user = DAT154_Libs.Data.getUserByEmail(username);
+            return user.verifyPassword(password);
         }
 
         public void doSubmitNewTask() {
@@ -184,15 +181,25 @@ namespace DAT154_Desktop
         }
 
         public void doCancel() {
-            
+            ((BookingContainer)booking.bookingList.SelectedItem).myBooking.booking_status = DAT154_Libs.Booking.STATUS.CANCELED;
+            DAT154_Libs.Data.save();
+            booking.bookingList.Items.Refresh();
+
         }
         public void doOpen() {
-
+            ((BookingContainer)booking.bookingList.SelectedItem).myBooking.booking_status = DAT154_Libs.Booking.STATUS.BOOKED;
+            DAT154_Libs.Data.save();
+            booking.bookingList.Items.Refresh();
         }
         public void doCheckin() {
-
+            ((BookingContainer)booking.bookingList.SelectedItem).myBooking.booking_status = DAT154_Libs.Booking.STATUS.CHECKEDIN;
+            DAT154_Libs.Data.save();
+            booking.bookingList.Items.Refresh();
         }
         public void doCheckout() {
+            ((BookingContainer)booking.bookingList.SelectedItem).myBooking.booking_status = DAT154_Libs.Booking.STATUS.COMPLETE;
+            DAT154_Libs.Data.save();
+            booking.bookingList.Items.Refresh();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace DAT154_Desktop {
     /// </summary>
     public partial class Service : Page {
 
-        ObservableCollection<DAT154_Libs.Task> tasks;
+        ObservableCollection<TaskContainer> tasks;
         ObservableCollection<DAT154_Libs.Room> rooms;
         ObservableCollection<string> categories;
 
@@ -30,9 +30,9 @@ namespace DAT154_Desktop {
             
             taskList.MouseDoubleClick += taskClicked;
 
-            tasks = new ObservableCollection<DAT154_Libs.Task>();
-            foreach (DAT154_Libs.Task task in FakeData.getTasks()) {
-                tasks.Add(task);
+            tasks = new ObservableCollection<TaskContainer>();
+            foreach (DAT154_Libs.Task task in DAT154_Libs.Data.getTasks()) {
+                tasks.Add(new TaskContainer(task));
             }
             taskList.ItemsSource = tasks;
 
@@ -46,7 +46,7 @@ namespace DAT154_Desktop {
             categories.Add("Legal");
             categories.Add("Exorcism");
 
-            foreach (DAT154_Libs.Room room in FakeData.getRooms()) {
+            foreach (DAT154_Libs.Room room in DAT154_Libs.Data.getRooms()) {
                 rooms.Add(room);
             }
             newroom.ItemsSource = rooms;
@@ -80,17 +80,17 @@ namespace DAT154_Desktop {
         private void taskClicked(object sender, MouseButtonEventArgs e) {
             Console.WriteLine("clicked");
             viewPopup.IsOpen = true;
-            DAT154_Libs.Task selectedTask = (DAT154_Libs.Task)taskList.SelectedItem;
-            viewroom.Content = selectedTask.room_id;
-            viewcategory.Content = selectedTask.category;
-            viewtext.Content = selectedTask.notes;
+            TaskContainer selectedTask = ((TaskContainer)taskList.SelectedItem);
+            viewroom.Content = selectedTask.room_number;
+            viewcategory.Content = selectedTask.categories;
+            viewtext.Content = selectedTask.myTask.notes;
         }
 
         public void refreshTaskList(List<DAT154_Libs.Task> _tasks) {
-            tasks = new ObservableCollection<DAT154_Libs.Task>();
+            tasks = new ObservableCollection<TaskContainer>();
 
             foreach (DAT154_Libs.Task _task in _tasks) {
-                tasks.Add(_task);
+                tasks.Add(new TaskContainer(_task));
             }
         }
 
@@ -106,6 +106,37 @@ namespace DAT154_Desktop {
                 default: return -1;
             }
         }
+    }
+
+    public class TaskContainer {
+        public DAT154_Libs.Task myTask { get; set; }
+
+        public TaskContainer(DAT154_Libs.Task _myTask) {
+            myTask = _myTask;
+            room_number = 101;
+
+            //room_number = DAT154_Libs.Data.getRoomById(myTask.room_id).room_number;
+        }
+
+        public string categories {
+            get {
+                string cts = "";
+                for (int i = 1; i < 64; i *= 2) {
+                    if (myTask.isCategory(i)) {
+                        if (cts.Length == 0) {
+                            cts = cts + getCategoryString(i);
+                        } else {
+                            cts = cts + ", " + getCategoryString(i);
+                        }
+                    }
+                }
+
+                return cts;
+            }
+            set { categories = value; }
+        }
+
+        public int room_number { get; set; }
 
         public static string getCategoryString(int categoryInt) {
             switch (categoryInt) {
@@ -118,7 +149,7 @@ namespace DAT154_Desktop {
 
                 default: return "invalid category";
             }
-
         }
+
     }
 }

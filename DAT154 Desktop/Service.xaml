@@ -7,18 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Service">
-    <Page.Resources>
-        <ObjectDataProvider ObjectType="{x:Type local:Service}"
-                            xmlns:system="clr-namespace:System;assembly=mscorlib"
-                            MethodName="getCategoryString" x:Key="categoryString">
-            <ObjectDataProvider.MethodParameters>
-                <system:Int32></system:Int32>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Page.Resources>
-    
+
     <DockPanel>
-        <Popup Name="newPopup" Placement="MousePoint" IsOpen="false" Width="250">
+        <Popup Name="newPopup" Placement="Relative" IsOpen="false" Width="250">
             <StackPanel Margin="1,1" Background="White">
                 <Label Name="newpopupexitButton" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right" HorizontalContentAlignment="Right" MouseDown="closeNew" MouseEnter="newmouseoverX" MouseLeave="newmouseleaveX">
                     x
@@ -35,13 +26,13 @@
                 <Label Content="Category"></Label>
                 <ComboBox Name="newcategory" SelectedIndex="0"></ComboBox>
                 <Label Content="Description"></Label>
-                <TextBox Name="newtext"></TextBox>
+                <TextBox Name="newtext" TextWrapping="Wrap"></TextBox>
                 <Button Content="Submit" Name="newButton"></Button>
                 <Label Content="" Name="newerror" Foreground="Red"></Label>
             </StackPanel>
         </Popup>
 
-        <Popup Name="viewPopup" Placement="MousePoint" IsOpen="false">
+        <Popup Name="viewPopup" Placement="Relative" IsOpen="false">
             <StackPanel Margin="1,1" Background="White" Width="250">
                 <Label Name="viewpopupexitButton" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right" HorizontalContentAlignment="Right" MouseDown="closeView" MouseEnter="viewmouseoverX" MouseLeave="viewmouseleaveX">
                     x
@@ -65,12 +56,12 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
-                        <Run Text="Task "/>
-                        <Run Text="{Binding id}"/>
-                        <Run Text=" at Room "/>
-                        <Run Text="{Binding room_id}"/>
-                        <Run Text=" of category "/>
-                        <Run Text="{Binding Source={StaticResource categoryString}}"/>
+                        <Run Text="Task id"/>
+                        <Run Text="{Binding myTask.id}"/>
+                        <Run Text="at Room"/>
+                        <Run Text="{Binding room_number}"/>
+                        <Run Text="of category"/>
+                        <Run Text="{Binding categories}"/>
                     </TextBlock>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

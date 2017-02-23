@@ -9,7 +9,7 @@
       Title="Booking">
     
     <DockPanel>
-        <Popup Name="newbookingPopup" Placement="MousePoint" IsOpen="false">
+        <Popup Name="newbookingPopup" Placement="Relative" IsOpen="false">
             <StackPanel Margin="1,1" Background="White">
                 <Label Name="popupexitButton" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right" HorizontalContentAlignment="Right" MouseDown="closeBooking" MouseEnter="mouseoverX" MouseLeave="mouseleaveX">
                     x
@@ -69,19 +69,19 @@
             <Button Grid.Column="3" Margin="5,10" Content="Check out" Name="checkoutButton"/>
         </Grid>
         
-        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="bookingList">
+        <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="bookingList" SelectedIndex="0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
-                        <Run Text="{Binding user_id}"/>
-                        <Run Text=" has Room "/>
-                        <Run Text="{Binding room_id}"/>
-                        <Run Text=" from "/>
-                        <Run Text="{Binding start_date}"/>
-                        <Run Text=" to "/>
-                        <Run Text="{Binding end_date}"/>
-                        <Run Text=" - Status: "/>
-                        <Run Text="{Binding booking_status}"/>
+                        <Run Text="{Binding name}"/>
+                        <Run Text="has Room"/>
+                        <Run Text="{Binding room}"/>
+                        <Run Text="from"/>
+                        <Run Text="{Binding myBooking.start_date, StringFormat='{}{0:dd/mm/yyyy}'}"/>
+                        <Run Text="to"/>
+                        <Run Text="{Binding myBooking.end_date, StringFormat='{}{0:dd/mm/yyyy}'}"/>
+                        <Run Text="- Status:"/>
+                        <Run Text="{Binding status}"/>
                     </TextBlock>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

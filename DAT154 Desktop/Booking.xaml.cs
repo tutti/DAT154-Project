@@ -19,7 +19,7 @@ namespace DAT154_Desktop {
     /// Interaction logic for Booking.xaml
     /// </summary>
     public partial class Booking : Page {
-        ObservableCollection<DAT154_Libs.Booking> bookings;
+        ObservableCollection<BookingContainer> bookings;
         ObservableCollection<DAT154_Libs.Room> rooms;
         ObservableCollection<string> roomsizes;
         ObservableCollection<string> roomqualities;
@@ -29,10 +29,10 @@ namespace DAT154_Desktop {
             InitializeComponent();
 
             //Bookings list
-            bookings = new ObservableCollection<DAT154_Libs.Booking>();
+            bookings = new ObservableCollection<BookingContainer>();
 
-            foreach (DAT154_Libs.Booking booking in FakeData.getBookings()) {
-                bookings.Add(booking);
+            foreach (DAT154_Libs.Booking booking in DAT154_Libs.Data.getBookings()) {
+                bookings.Add(new BookingContainer(booking));
             }
 
             bookingList.ItemsSource = bookings;
@@ -124,10 +124,37 @@ namespace DAT154_Desktop {
         }
 
         public void refreshBookingList(List<DAT154_Libs.Booking> _bookings) {
-            bookings = new ObservableCollection<DAT154_Libs.Booking>();
+            bookings = new ObservableCollection<BookingContainer>();
 
             foreach (DAT154_Libs.Booking _booking in _bookings) {
-                bookings.Add(_booking);
+                bookings.Add(new BookingContainer(_booking));
+            }
+        }
+    }
+
+    public class BookingContainer {
+        public DAT154_Libs.Booking myBooking { get; set;}
+        public string name { get; set; }
+        public int room { get; set; }
+        public string status { get {return statusString(myBooking.booking_status); } set {;} }
+
+        public BookingContainer(DAT154_Libs.Booking _myBooking) {
+            myBooking = _myBooking;
+            name = "test value, please change";
+            room = 101;
+
+            //room = DAT154_Libs.Data.getRoomById(myBooking.room_id).room_number;
+            //name = DAT154_Libs.Data.getUserById(myBooking.user_id).name;
+        }
+
+        private static string statusString(int statusInt) {
+            switch(statusInt) {
+                case -1: return "Canceled";
+                case 0: return "Open";
+                case 2: return "Checked in";
+                case 3: return "Completed";
+
+                default: return "invalid status";
             }
         }
     }
