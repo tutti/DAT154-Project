@@ -25,11 +25,10 @@ namespace DAT154_Web
                     errors.Add("Could not find user.");
                 } else if (!user.verifyPassword(password)) {
                     errors.Add("Wrong password.");
-                } else {
-                    Session["user"] = user;
                 }
 
                 if (errors.Count() == 0) {
+                    Session["user"] = user;
                     Response.Redirect("~/");
                 }
             }
@@ -40,12 +39,6 @@ namespace DAT154_Web
 
             errorList.DataSource = errors;
             errorList.DataBind();
-
-            /*foreach (string error in errors) {
-                HtmlGenericControl span = new HtmlGenericControl("span");
-                span.InnerText = error;
-                errorContainer.Controls.Add(span);
-            }*/
         }
     }
 }

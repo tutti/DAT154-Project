@@ -59,6 +59,7 @@
                             <li><a href="/Login">Log in</a></li>
                         </ul>
                     </div>
+                    <% if (!username.Equals("")) { %><span style="color: white;">Hello, <%= username %></span> <% } %>
                     <div runat="server" id="usermenu">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/Bookings">My bookings</a></li>

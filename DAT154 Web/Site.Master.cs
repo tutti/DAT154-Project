@@ -17,6 +17,8 @@ namespace DAT154_Web
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
 
+        protected string username = "";
+
         protected void Page_Init(object sender, EventArgs e)
         {
             // The code below helps to protect against XSRF attacks
@@ -76,6 +78,7 @@ namespace DAT154_Web
             {
                 usermenu.Visible = true;
                 loginmenu.Visible = false;
+                username = ((User)Session["user"]).name;
             }
             else
             {
