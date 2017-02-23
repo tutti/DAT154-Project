@@ -30,7 +30,7 @@ namespace DAT154_Libs {
             public static readonly int MAINTAINER = 3;
             public static readonly int CONCIERGE = 4;
             public static readonly int LAWYER = 5;
-
+            public static readonly int CLERGY = 6;
         }
 
         [Column(IsPrimaryKey = true, CanBeNull = false, IsDbGenerated = true, AutoSync = AutoSync.OnInsert)]
