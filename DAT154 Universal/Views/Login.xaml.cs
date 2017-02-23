@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,11 +25,27 @@ namespace DAT154_Universal.Views {
             this.InitializeComponent();
         }
 
-        private void PassportSignInButton_Click(object sender, RoutedEventArgs e) {
-            ErrorMessage.Text = "User not found";
+        private void SignInButton_Click(object sender, RoutedEventArgs e) {
+            
+            if (UsernameTextBox.Text == "Magnar"){
+                writeToFile("16");
+            }else {
+                ErrorMessage.Text = "User not found";
+            }
+            
         }
-        private void RegisterButtonTextBlock_OnPointerPressed(object sender, PointerRoutedEventArgs e) {
+
+        async void writeToFile(string type) {
+            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+            StorageFile userType;
+            try {
+                userType = await tempFolder.CreateFileAsync("user.txt");
+            } catch {
+                userType = await tempFolder.GetFileAsync("user.txt");
+            }
+            await FileIO.WriteTextAsync(userType, type);
             Frame.Navigate(typeof(JobListing));
         }
+        
     }
 }
