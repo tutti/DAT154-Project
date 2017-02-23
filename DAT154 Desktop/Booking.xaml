@@ -23,12 +23,14 @@
                     
                     <StackPanel Grid.Column="0" Width="120" Margin="10,10">
                         
-                        <Label Content="Username of guest"></Label>
-                        <TextBox Name="username"></TextBox>
+                        <Label Content="Guest e-mail"></Label>
+                        <TextBox Name="email"></TextBox>
                         <Label Content="Room size"></Label>
-                        <ComboBox Name="roomsize"></ComboBox>
+                        <ComboBox Name="roomsize" SelectedIndex="0"></ComboBox>
                         <Label Content="Room quality"></Label>
-                        <ComboBox Name="roomquality"></ComboBox>
+                        <ComboBox Name="roomquality" SelectedIndex="0"></ComboBox>
+                        <Label Content="Number of beds"></Label>
+                        <ComboBox Name="bednumber" SelectedIndex="0"></ComboBox>
                         <Label Content="Start date"></Label>
                         <DatePicker Name="startdate"></DatePicker>
                         <Label Content="End date"></Label>

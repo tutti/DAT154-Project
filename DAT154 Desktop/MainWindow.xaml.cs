@@ -44,7 +44,7 @@ namespace DAT154_Desktop
             //Booking menu
             booking.mainmenuButton.Click += new RoutedEventHandler(mainmenuButtonClick);
             booking.searchButton.Click += new RoutedEventHandler(searchButtonClick);
-            booking.bookButton.Click += new RoutedEventHandler(bookButtonClick);
+            booking.bookButton.Click += bookButtonClick;
             booking.nameFilter.TextChanged += new TextChangedEventHandler(filterBookingList);
             booking.cancelButton.Click += new RoutedEventHandler(cancelButtonClick);
             booking.openButton.Click += new RoutedEventHandler(openButtonClick);
@@ -75,11 +75,8 @@ namespace DAT154_Desktop
             goMainMenu();
         }
         public void submitButtonClick(object sender, EventArgs e) {
-            if (doSubmitNewTask()) {
-                service.newPopup.IsOpen = false;
-            } else {
-                service.newerror.Content = "Failed to submit task";
-            }
+            doSubmitNewTask();
+            service.newPopup.IsOpen = false;
         }
         public void bookingButtonClick(object sender, EventArgs e) {
             goBooking();
@@ -108,22 +105,41 @@ namespace DAT154_Desktop
             goLogin();
         }
 
-
         public void bookButtonClick(object sender, EventArgs e) {
-            if (doBook()) {
-                booking.newbookingPopup.IsOpen = false;
-            } else {
-                booking.error.Content = "No rooms meet the requirement";
-            }
+            doBook();
+            booking.newbookingPopup.IsOpen = false;
         }
         public void filterBookingList(object sender, TextChangedEventArgs e) {
-            //fetch new list filtered by name
+            //Get all users matching the name
+            List<DAT154_Libs.User> users = DAT154_Libs.Data.getUsersByName((string)booking.nameFilter.Text);
+            List<DAT154_Libs.Booking> results = new List<DAT154_Libs.Booking>();
+
+            //For each user, find their bookings, and for each of their bookings add it to the list
+            foreach (DAT154_Libs.User user in users) {
+                List<DAT154_Libs.Booking> subresults = DAT154_Libs.Data.getBookings(user);
+                foreach (DAT154_Libs.Booking subresult in subresults) {
+                    results.Add(subresult);
+                }
+            } 
+
+            booking.refreshBookingList(results);
         }
         public void filterTaskList(object sender, TextChangedEventArgs e) {
             //fetch new list filtered by room
+            int roomnumber = Convert.ToInt32(service.roomFilter.Text);
+            DAT154_Libs.Room room = DAT154_Libs.Data.getRoomByRoomNumber(roomnumber);
+            List<DAT154_Libs.Task> tasks = DAT154_Libs.Data.getTasks(room, null, null);
+
+            service.refreshTaskList(tasks);
         }
-        public void searchAvailableRooms() {
-            //fetch list of rooms matching search parameters
+        public void searchAvailableRooms() {;
+            int roomsize = booking.getRoomSizeInt();
+            int roomquality = booking.getRoomQualityInt();
+            int bednumber = (int) booking.bednumber.SelectedItem;
+            DateTime startdate = booking.startdate.SelectedDate.Value;
+            DateTime enddate = booking.startdate.SelectedDate.Value;
+
+            booking.refreshRoomList(DAT154_Libs.Data.getRooms(bednumber, -1, roomsize, -1, roomquality, -1, startdate, enddate));
         }
 
         public void goBooking() {
@@ -135,23 +151,40 @@ namespace DAT154_Desktop
         }
 
         public Boolean dologin() {
+            string username = login.usernameInput.Text;
+            string password = login.passwordInput.Password;
+
+            //DAT154_Libs.Data.login(username, password);
+            //The above should return a boolean or a user object
+
+            //Temp code to prevent errors
             return true;
         }
 
-        public Boolean doSubmitNewTask() {
-            return false;
+        public void doSubmitNewTask() {
+            DAT154_Libs.Task task = new DAT154_Libs.Task();
+            task.category = service.getCategoryInt();
+            task.notes = service.newtext.Text;
+            task.room_id = ((DAT154_Libs.Room)service.newroom.SelectedItem).id;
+
+            DAT154_Libs.Data.insert(task);
         }
 
         public void doLogout() {
             goLogin();
         }
 
-        public Boolean doBook() {
-            return false;
+        public void doBook() {
+            DAT154_Libs.User user = DAT154_Libs.Data.getUserByEmail(booking.email.Text);
+            DateTime startdate = booking.startdate.SelectedDate.Value;
+            DateTime enddate = booking.startdate.SelectedDate.Value;
+            DAT154_Libs.Room room = (DAT154_Libs.Room)booking.roomList.SelectedItem;
+
+            DAT154_Libs.Data.bookRoom(user,room,startdate,enddate);
         }
 
         public void doCancel() {
-
+            
         }
         public void doOpen() {
 

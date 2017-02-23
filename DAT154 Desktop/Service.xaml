@@ -7,7 +7,16 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Service">
-
+    <Page.Resources>
+        <ObjectDataProvider ObjectType="{x:Type local:Service}"
+                            xmlns:system="clr-namespace:System;assembly=mscorlib"
+                            MethodName="getCategoryString" x:Key="categoryString">
+            <ObjectDataProvider.MethodParameters>
+                <system:Int32></system:Int32>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Page.Resources>
+    
     <DockPanel>
         <Popup Name="newPopup" Placement="MousePoint" IsOpen="false" Width="250">
             <StackPanel Margin="1,1" Background="White">
@@ -16,9 +25,15 @@
                 </Label>
                 <Label HorizontalAlignment="Center" Content="Add task"></Label>
                 <Label Content="Room"></Label>
-                <ComboBox Name="newroom"></ComboBox>
+                <ComboBox Name="newroom" SelectedIndex="0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding room_number}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ComboBox>
                 <Label Content="Category"></Label>
-                <ComboBox Name="newcategory"></ComboBox>
+                <ComboBox Name="newcategory" SelectedIndex="0"></ComboBox>
                 <Label Content="Description"></Label>
                 <TextBox Name="newtext"></TextBox>
                 <Button Content="Submit" Name="newButton"></Button>
@@ -55,7 +70,7 @@
                         <Run Text=" at Room "/>
                         <Run Text="{Binding room_id}"/>
                         <Run Text=" of category "/>
-                        <Run Text="{Binding category}"/>
+                        <Run Text="{Binding Source={StaticResource categoryString}}"/>
                     </TextBlock>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
