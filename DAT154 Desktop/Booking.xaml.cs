@@ -140,11 +140,8 @@ namespace DAT154_Desktop {
 
         public BookingContainer(DAT154_Libs.Booking _myBooking) {
             myBooking = _myBooking;
-            name = "test value, please change";
-            room = 101;
-
-            //room = DAT154_Libs.Data.getRoomById(myBooking.room_id).room_number;
-            //name = DAT154_Libs.Data.getUserById(myBooking.user_id).name;
+            room = DAT154_Libs.Data.getRoomById(myBooking.room_id).room_number;
+            name = DAT154_Libs.Data.getUserById(myBooking.user_id).name;
         }
 
         private static string statusString(int statusInt) {

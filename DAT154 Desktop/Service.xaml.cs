@@ -113,9 +113,7 @@ namespace DAT154_Desktop {
 
         public TaskContainer(DAT154_Libs.Task _myTask) {
             myTask = _myTask;
-            room_number = 101;
-
-            //room_number = DAT154_Libs.Data.getRoomById(myTask.room_id).room_number;
+            room_number = DAT154_Libs.Data.getRoomById(myTask.room_id).room_number;
         }
 
         public string categories {
