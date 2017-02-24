@@ -5,7 +5,7 @@ using System;
 
 namespace DAT154_Libs {
     public class Data {
-        private static string host = ".\\SQLEXPRESS";
+        private static string host = "localhost";
         private static string user = "hotel";
         private static string pass = "hotel";
         private static string db = "hotel";
@@ -32,6 +32,11 @@ namespace DAT154_Libs {
         public static void insert(Task task) {
             Table<Task> tbl = cont.GetTable<Task>();
             tbl.InsertOnSubmit(task);
+        }
+
+        public static void insert(Room room) {
+            Table<Room> tbl = cont.GetTable<Room>();
+            tbl.InsertOnSubmit(room);
         }
 
         /*

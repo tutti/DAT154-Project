@@ -74,5 +74,27 @@ namespace DAT154_Desktop {
         ) {
             return Data.getBookings(user, room, startDate, endDate);
         }
+
+        public static void populateDB() {
+            User user = new User();
+            user.email = "test@test.com";
+            user.password = "abcdefg";
+            user.name = "Testy Testerson";
+            user.type = 0;
+            Data.insert(user);
+
+            for (int i = 1; i <=5; i++) {
+                for (int j = 1; j<=25;j++) {
+                    Room room = new Room();
+                    room.beds = 1 + (j % 7);
+                    room.quality = (i + j) % 3;
+                    room.room_size = j % 3;
+                    room.room_number = 100 * i + j;
+                    Data.insert(room);
+                }
+            }
+
+            save();
+        }
     }
 }
