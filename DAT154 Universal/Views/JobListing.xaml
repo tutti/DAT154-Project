@@ -7,24 +7,43 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ComboBox x:Name="job_type_list" Height="30">
-            <ComboBoxItem Name="maintainer">Cleaner</ComboBoxItem>
-            <ComboBoxItem Name="cleaner">Service</ComboBoxItem>
-            <ComboBoxItem Name="service">Maintainer</ComboBoxItem>
-        </ComboBox>
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-            <TextBlock Text="Jobs available for *insert jobtype here*" FontSize="21" TextAlignment="Center"/>
-            <ListView Name="TaskList">
+        <Grid VerticalAlignment="Top">
+            <Grid VerticalAlignment="Top" Background="DodgerBlue" Margin="0,0,0,0">
+                <ComboBox x:Name="job_type_list" Height="30" Foreground="White" SelectionChanged="JobTypeChange">
+                    <ComboBoxItem Content="Cleaner"></ComboBoxItem>
+                    <ComboBoxItem Content="Service"></ComboBoxItem>
+                    <ComboBoxItem Content="Maintainer"></ComboBoxItem>
+                    <ComboBoxItem Content="Concierge"></ComboBoxItem>
+                    <ComboBoxItem Content="Lawyer"></ComboBoxItem>
+                    <ComboBoxItem Content="Clergy"></ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="Task List" HorizontalAlignment="Center" FontSize="22" Foreground="White"/>
+                <Button x:Name="refreshButton" HorizontalAlignment="Right" Foreground="White" Click="refreshButton_clicked" Content="Refresh"/>
+            </Grid>
+            <Border BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" VerticalAlignment="Top" Margin="0,32">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Room Number" Width="125"/>
+                    <TextBlock Text="Status" Width="165"/>
+                    <TextBlock Text="Notes"/>
+                </StackPanel>
+            </Border>
+            <ListView Name="TaskList" Margin="0,55">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <!--<TextBlock Text="{Binding room.room_number}"/>-->
-                            <TextBlock Text="{Binding status}"/>
+                            <TextBlock Text="{Binding room.room_number}" Width="120"/>
+                            <ComboBox SelectedIndex="{Binding task.status}" Width="160" SelectionChanged="UpdateStatus">
+                                <ComboBoxItem>New</ComboBoxItem>
+                                <ComboBoxItem>In Progress</ComboBoxItem>
+                                <ComboBoxItem>Completed</ComboBoxItem>
+                            </ComboBox>
+                            <TextBox Text="{Binding task.notes}" TextChanged="UpdateNote"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

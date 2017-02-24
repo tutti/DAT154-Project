@@ -7,6 +7,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.Storage;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -21,37 +22,110 @@ namespace DAT154_Universal.Views {
     /// </summary>
     public sealed partial class JobListing : Page {
         List<TaskView> a;
+        List<TaskView> database;
+        int job_type;
+        int job_type_index;
         public JobListing() {
             this.InitializeComponent();
+            getJobFile();
+            database = new List<TaskView>();
+            database.Add(new TaskView(1, 1, 0, 1, ""));
+            database.Add(new TaskView(2, 404, 1, 32, "HOLY SHIT WHAT IS GOING ON?!"));
+            database.Add(new TaskView(3, 2, 2, 1, "Urgent"));
+        }
+        public async void getJobFile() {
+            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+            try {
+                StorageFile file = await tempFolder.GetFileAsync("user.txt");
+                String user = await FileIO.ReadTextAsync(file);
+                job_type = Int32.Parse(user);
+            }catch {
+                job_type = 1;
+            }
+            switch (job_type) {
+                case 1: job_type_index = 0;
+                    break;
+                case 2: job_type_index = 1;
+                    break;
+                case 4: job_type_index = 2;
+                    break;
+                case 8: job_type_index = 3;
+                    break;
+                case 16: job_type_index = 4;
+                    break;
+                case 32: job_type_index = 5;
+                    break;
+            }
+            job_type_list.SelectedIndex = job_type_index;
             a = new List<TaskView>();
-            a.Add(new TaskView(1, 1, 0, 1, ""));
-            a.Add(new TaskView(2, 404, -1, 16, ""));
+            foreach(TaskView task in database) {
+                if (task.task.category == job_type) {
+                    a.Add(task);
+                }
+            }
             TaskList.ItemsSource = a;
+        }
+
+        public void refreshButton_clicked(object  sender, RoutedEventArgs args) {
+            TaskList.ItemsSource = null;
+            TaskList.Items.Clear();
+            //Query goes here
+            TaskList.ItemsSource = a;
+        }
+
+        public void JobTypeChange(object sender, SelectionChangedEventArgs args) {
+            job_type_index = job_type_list.SelectedIndex;
+            switch (job_type_index) {
+                case 0: job_type = 1;
+                    break;
+                case 1: job_type = 2;
+                    break;
+                case 2: job_type = 4;
+                    break;
+                case 3: job_type = 8;
+                    break;
+                case 4: job_type = 16;
+                    break;
+                case 5: job_type = 32;
+                    break;
+            }
+            a = new List<TaskView>();
+            foreach (TaskView task in database) {
+                if (task.task.category == job_type) {
+                    a.Add(task);
+                }
+            }
+            TaskList.ItemsSource = null;
+            TaskList.Items.Clear();
+            TaskList.ItemsSource = a;
+        }
+        public void UpdateStatus(object sender, SelectionChangedEventArgs args) {
+            var comboBox = (ComboBox)sender;
+            int newStatus = comboBox.SelectedIndex;
+            TaskView tv = (TaskView)comboBox.DataContext;
+            if (tv != null) {
+                tv.task.status = newStatus;
+            }
+        }
+
+        public void UpdateNote(object sender, TextChangedEventArgs args) {
+            var textBox = (TextBox)sender;
+            string newNote =textBox.Text;
+            TaskView tv = (TaskView)textBox.DataContext;
+            if(tv != null) {
+                tv.task.notes = newNote;
+            }
         }
     }
     public class TaskView {
         public MockTasks task { get; set; }
         public MockRoom room { get; set; }
-
-        public string status { get; set; }
         public TaskView(int _id, int _room_id, int _status, int _category, string _notes) {
             task = new MockTasks(_id, _room_id, _status, _category, _notes);
             room = new MockRoom(_room_id);
-            switch(task.status){
-                case -1:
-                    status = "Canceled";
-                    break;
-                case 0:
-                    status = "New";
-                    break;
-                case 1:
-                    status = "Assigned";
-                    break;
-                case 2:
-                    status = "Completed";
-                    break;
-            }
         }
+
+     
     }
 
     public class MockRoom {
@@ -73,10 +147,10 @@ namespace DAT154_Universal.Views {
         public class CATEGORY {
             public static readonly int CLEANING = 1;
             public static readonly int SERVICE = 2;
-            public static readonly int MAINTENANCE = 3;
-            public static readonly int CONCIERGENCE = 4;
-            public static readonly int LEGAL = 8;
-            public static readonly int EXORCISM = 16;
+            public static readonly int MAINTENANCE = 4;
+            public static readonly int CONCIERGENCE = 8;
+            public static readonly int LEGAL = 16;
+            public static readonly int EXORCISM = 32;
         }
 
         public MockTasks(int _id, int _room_id, int _status, int _category, string _notes) {

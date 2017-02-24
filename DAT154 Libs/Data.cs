@@ -34,6 +34,11 @@ namespace DAT154_Libs {
             tbl.InsertOnSubmit(task);
         }
 
+        public static void insert(Room room) {
+            Table<Room> tbl = cont.GetTable<Room>();
+            tbl.InsertOnSubmit(room);
+        }
+
         /*
          * Room functions
          */

@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using System.Net.Http;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Collections.Generic;
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,11 +23,56 @@ namespace DAT154_Universal.Views {
             this.InitializeComponent();
         }
 
-        private void PassportSignInButton_Click(object sender, RoutedEventArgs e) {
-            ErrorMessage.Text = "User not found";
+        private void SignInButton_Click(object sender, RoutedEventArgs e) {
+            CheckServer(UsernameTextBox.Text, PasswordTextBox.Password);
         }
-        private void RegisterButtonTextBlock_OnPointerPressed(object sender, PointerRoutedEventArgs e) {
+
+        private async void CheckServer(string username, string password) {
+
+
+            HttpClient httpClient = new HttpClient();
+            try {
+                var variables = new Dictionary<string, string> {
+                    {"email",username },
+                    {"password",password }
+                };  
+                var content = new FormUrlEncodedContent(variables);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/login", content);
+
+                try {
+                    String data = await result.Content.ReadAsStringAsync();
+                    if (data.Contains("user")){ 
+                        string newdata = data.Substring(data.IndexOf("type\":"));
+                        string seconddata = newdata.Substring(newdata.IndexOf(':')+1);
+                        string lastdata = seconddata.Substring(0,seconddata.IndexOf(','));
+                        writeToFile(Convert.ToInt32(lastdata));
+                    } else {
+                        ErrorMessage.Text = "User not found";
+                    }
+                    
+                } catch {
+                    ErrorMessage.Text = "User not found";
+                }
+                
+            } catch {
+                ErrorMessage.Text = "Could not get connection";
+            }
+        }
+
+        async void writeToFile(int type) {
+            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+            StorageFile userType;
+            try {
+                userType = await tempFolder.CreateFileAsync("user.txt");
+            } catch {
+                userType = await tempFolder.GetFileAsync("user.txt");
+            }
+            await FileIO.WriteTextAsync(userType, type.ToString());
             Frame.Navigate(typeof(JobListing));
         }
+        
     }
+
+
+    
 }
