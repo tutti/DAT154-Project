@@ -36,7 +36,7 @@ namespace DAT154_Universal.Views {
                 ms.Position = 0;
                 StreamReader sr = new StreamReader(ms);
                 var content = new StringContent(sr.ReadToEnd(), Encoding.UTF8, "application/json");
-                var result = await httpClient.PostAsync("localhost:1893", content);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/login", content);
                 ms = new MemoryStream(Encoding.UTF8.GetBytes(result.Content.ToString()));
 
                 try {
