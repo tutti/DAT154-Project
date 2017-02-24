@@ -5,7 +5,7 @@ using System;
 
 namespace DAT154_Libs {
     public class Data {
-        private static string host = ".\\SQLEXPRESS";
+        private static string host = "localhost";
         private static string user = "hotel";
         private static string pass = "hotel";
         private static string db = "hotel";
