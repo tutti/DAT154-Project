@@ -17,7 +17,7 @@ namespace DAT154_Web.API {
                 
                 List<Task> task = Data.getTasks(null,1,Convert.ToInt32(category));
                 List<Task> task2 = Data.getTasks(null, 2, Convert.ToInt32(category));
-
+                task.AddRange(task2);
                 json = JsonConvert.SerializeObject(new { status = "OK", task = task });
                 
             } else {

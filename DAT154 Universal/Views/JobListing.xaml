@@ -19,7 +19,7 @@
                     <ComboBoxItem Content="Lawyer"></ComboBoxItem>
                     <ComboBoxItem Content="Clergy"></ComboBoxItem>
                 </ComboBox>
-                <TextBlock Text="Task List" HorizontalAlignment="Center" FontSize="22" Foreground="White"/>
+                <TextBlock Name="testName"  Text="Task List" HorizontalAlignment="Center" FontSize="22" Foreground="White"/>
                 <Button x:Name="refreshButton" HorizontalAlignment="Right" Foreground="White" Click="refreshButton_clicked" Content="Refresh"/>
             </Grid>
             <Border BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" VerticalAlignment="Top" Margin="0,32">

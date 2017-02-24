@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Net.Http;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,16 +23,11 @@ namespace DAT154_Universal.Views {
     /// </summary>
     public sealed partial class JobListing : Page {
         List<TaskView> a;
-        List<TaskView> database;
         int job_type;
         int job_type_index;
         public JobListing() {
             this.InitializeComponent();
             getJobFile();
-            database = new List<TaskView>();
-            database.Add(new TaskView(1, 1, 0, 1, ""));
-            database.Add(new TaskView(2, 404, 1, 32, "HOLY SHIT WHAT IS GOING ON?!"));
-            database.Add(new TaskView(3, 2, 2, 1, "Urgent"));
         }
         public async void getJobFile() {
             StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
@@ -58,19 +54,29 @@ namespace DAT154_Universal.Views {
             }
             job_type_list.SelectedIndex = job_type_index;
             a = new List<TaskView>();
-            foreach(TaskView task in database) {
-                if (task.task.category == job_type) {
-                    a.Add(task);
-                }
+            checkServer(job_type);
+        }
+
+        async void checkServer(int job_type) {
+            HttpClient httpClient = new HttpClient();
+            try {
+                var variables = new Dictionary<string, string> {
+                    {"category",job_type.ToString() }
+                };
+                var content = new FormUrlEncodedContent(variables);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/getTask", content);
+                parseJSON(await result.Content.ReadAsStringAsync());
+            } catch {
+
             }
-            TaskList.ItemsSource = a;
+                
+                TaskList.ItemsSource = a;
         }
 
         public void refreshButton_clicked(object  sender, RoutedEventArgs args) {
             TaskList.ItemsSource = null;
             TaskList.Items.Clear();
-            //Query goes here
-            TaskList.ItemsSource = a;
+            checkServer(job_type);
         }
 
         public void JobTypeChange(object sender, SelectionChangedEventArgs args) {
@@ -89,15 +95,10 @@ namespace DAT154_Universal.Views {
                 case 5: job_type = 32;
                     break;
             }
-            a = new List<TaskView>();
-            foreach (TaskView task in database) {
-                if (task.task.category == job_type) {
-                    a.Add(task);
-                }
-            }
+            
             TaskList.ItemsSource = null;
             TaskList.Items.Clear();
-            TaskList.ItemsSource = a;
+            checkServer(job_type);
         }
         public void UpdateStatus(object sender, SelectionChangedEventArgs args) {
             var comboBox = (ComboBox)sender;
@@ -116,22 +117,27 @@ namespace DAT154_Universal.Views {
                 tv.task.notes = newNote;
             }
         }
+
+        public void parseJSON(string JSON) {
+            testName.Text = JSON;
+        }
     }
+
     public class TaskView {
         public MockTasks task { get; set; }
-        public MockRoom room { get; set; }
+        public Room room { get; set; }
         public TaskView(int _id, int _room_id, int _status, int _category, string _notes) {
             task = new MockTasks(_id, _room_id, _status, _category, _notes);
-            room = new MockRoom(_room_id);
+            room = new Room(_room_id);
         }
 
      
     }
 
-    public class MockRoom {
+    public class Room {
         public int room_id { get; set; }
         public int room_number { get; set; }
-        public MockRoom(int _room_id) {
+        public Room(int _room_id) {
             room_id = _room_id;
             room_number = _room_id;
         }
