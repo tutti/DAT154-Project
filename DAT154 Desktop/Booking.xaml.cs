@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using DAT154_Libs;
 
 namespace DAT154_Desktop {
     /// <summary>
@@ -20,7 +21,7 @@ namespace DAT154_Desktop {
     /// </summary>
     public partial class Booking : Page {
         ObservableCollection<BookingContainer> bookings;
-        ObservableCollection<DAT154_Libs.Room> rooms;
+        ObservableCollection<Room> rooms;
         ObservableCollection<string> roomsizes;
         ObservableCollection<string> roomqualities;
         ObservableCollection<int> bednumbers;
@@ -31,14 +32,14 @@ namespace DAT154_Desktop {
             //Bookings list
             bookings = new ObservableCollection<BookingContainer>();
 
-            foreach (DAT154_Libs.Booking booking in DAT154_Libs.Data.getBookings()) {
+            foreach (DAT154_Libs.Booking booking in DataAccess.getBookings()) {
                 bookings.Add(new BookingContainer(booking));
             }
 
             bookingList.ItemsSource = bookings;
 
             //New booking popup menu
-            rooms = new ObservableCollection<DAT154_Libs.Room>();
+            rooms = new ObservableCollection<Room>();
             roomsizes = new ObservableCollection<string>();
             roomqualities = new ObservableCollection<string>();
             bednumbers = new ObservableCollection<int>();
@@ -98,7 +99,7 @@ namespace DAT154_Desktop {
             startdate.SelectedDate = DateTime.Today;
             enddate.SelectedDate = startdate.SelectedDate.Value.AddDays(1);
 
-            rooms = new ObservableCollection<DAT154_Libs.Room>();
+            rooms = new ObservableCollection<Room>();
             roomList.ItemsSource = rooms;
         }
 
@@ -130,10 +131,10 @@ namespace DAT154_Desktop {
             }
         }
 
-        public void refreshRoomList(List<DAT154_Libs.Room> _rooms) {
-            rooms = new ObservableCollection<DAT154_Libs.Room>();
+        public void refreshRoomList(List<Room> _rooms) {
+            rooms = new ObservableCollection<Room>();
 
-            foreach (DAT154_Libs.Room _room in _rooms) {
+            foreach (Room _room in _rooms) {
                 rooms.Add(_room);
             }
 
@@ -159,8 +160,8 @@ namespace DAT154_Desktop {
 
         public BookingContainer(DAT154_Libs.Booking _myBooking) {
             myBooking = _myBooking;
-            room = DAT154_Libs.Data.getRoomById(myBooking.room_id).room_number;
-            name = DAT154_Libs.Data.getUserById(myBooking.user_id).name;
+            room = DataAccess.getRoomById(myBooking.room_id).room_number;
+            name = DataAccess.getUserById(myBooking.user_id).name;
         }
 
         private static string statusString(int statusInt) {
