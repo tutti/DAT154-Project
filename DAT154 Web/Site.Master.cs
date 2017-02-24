@@ -7,6 +7,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
+using DAT154_Libs;
 
 namespace DAT154_Web
 {
@@ -15,6 +16,8 @@ namespace DAT154_Web
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
+
+        protected string username = "";
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -65,11 +68,23 @@ namespace DAT154_Web
                     throw new InvalidOperationException("Validation of Anti-XSRF token failed.");
                 }
             }
+
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["user"] != null)
+            {
+                usermenu.Visible = true;
+                loginmenu.Visible = false;
+                username = ((User)Session["user"]).name;
+            }
+            else
+            {
+                usermenu.Visible = false;
+                loginmenu.Visible = true;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
