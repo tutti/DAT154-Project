@@ -31,7 +31,7 @@ namespace DAT154_Desktop {
             //Bookings list
             bookings = new ObservableCollection<BookingContainer>();
 
-            foreach (DAT154_Libs.Booking booking in DAT154_Libs.Data.getBookings()) {
+            foreach (DAT154_Libs.Booking booking in DataAccess.getBookings()) {
                 bookings.Add(new BookingContainer(booking));
             }
 
@@ -159,8 +159,8 @@ namespace DAT154_Desktop {
 
         public BookingContainer(DAT154_Libs.Booking _myBooking) {
             myBooking = _myBooking;
-            room = DAT154_Libs.Data.getRoomById(myBooking.room_id).room_number;
-            name = DAT154_Libs.Data.getUserById(myBooking.user_id).name;
+            room = DataAccess.getRoomById(myBooking.room_id).room_number;
+            name = DataAccess.getUserById(myBooking.user_id).name;
         }
 
         private static string statusString(int statusInt) {

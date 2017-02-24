@@ -23,7 +23,7 @@ namespace DAT154_Desktop {
     public partial class Service : Page {
 
         ObservableCollection<TaskContainer> tasks;
-        ObservableCollection<DAT154_Libs.Room> rooms;
+        ObservableCollection<Room> rooms;
         ObservableCollection<string> categories;
 
         public Service() {
@@ -32,12 +32,12 @@ namespace DAT154_Desktop {
             taskList.MouseDoubleClick += taskClicked;
 
             tasks = new ObservableCollection<TaskContainer>();
-            foreach (DAT154_Libs.Task task in DAT154_Libs.Data.getTasks()) {
+            foreach (DAT154_Libs.Task task in DataAccess.getTasks()) {
                 tasks.Add(new TaskContainer(task));
             }
             taskList.ItemsSource = tasks;
 
-            rooms = new ObservableCollection<DAT154_Libs.Room>();
+            rooms = new ObservableCollection<Room>();
             categories = new ObservableCollection<string>();
 
             categories.Add("Cleaning");
@@ -47,7 +47,7 @@ namespace DAT154_Desktop {
             categories.Add("Legal");
             categories.Add("Exorcism");
 
-            foreach (DAT154_Libs.Room room in DAT154_Libs.Data.getRooms()) {
+            foreach (Room room in DataAccess.getRooms()) {
                 rooms.Add(room);
             }
             newroom.ItemsSource = rooms;
@@ -132,7 +132,7 @@ namespace DAT154_Desktop {
 
         public TaskContainer(DAT154_Libs.Task _myTask) {
             myTask = _myTask;
-            room_number = DAT154_Libs.Data.getRoomById(myTask.room_id).room_number;
+            room_number = DataAccess.getRoomById(myTask.room_id).room_number;
         }
 
         public string categories {
