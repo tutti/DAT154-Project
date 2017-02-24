@@ -9,25 +9,31 @@
       Title="Service">
 
     <DockPanel>
-        <Popup Name="newPopup" Placement="MousePoint" IsOpen="false">
+        <Popup Name="newPopup" Placement="Relative" IsOpen="false" Width="250">
             <StackPanel Margin="1,1" Background="White">
                 <Label Name="newpopupexitButton" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right" HorizontalContentAlignment="Right" MouseDown="closeNew" MouseEnter="newmouseoverX" MouseLeave="newmouseleaveX">
                     x
                 </Label>
                 <Label HorizontalAlignment="Center" Content="Add task"></Label>
                 <Label Content="Room"></Label>
-                <ComboBox Name="newroom"></ComboBox>
+                <ComboBox Name="newroom" SelectedIndex="0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding room_number}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ComboBox>
                 <Label Content="Category"></Label>
-                <ComboBox Name="newcategory"></ComboBox>
+                <ComboBox Name="newcategory" SelectedIndex="0"></ComboBox>
                 <Label Content="Description"></Label>
-                <TextBox Name="newtext"></TextBox>
+                <TextBox Name="newtext" TextWrapping="Wrap"></TextBox>
                 <Button Content="Submit" Name="newButton"></Button>
                 <Label Content="" Name="newerror" Foreground="Red"></Label>
             </StackPanel>
         </Popup>
 
-        <Popup Name="viewPopup" Placement="MousePoint" IsOpen="false">
-            <StackPanel Margin="1,1" Background="White">
+        <Popup Name="viewPopup" Placement="Relative" IsOpen="false">
+            <StackPanel Margin="1,1" Background="White" Width="250">
                 <Label Name="viewpopupexitButton" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right" HorizontalContentAlignment="Right" MouseDown="closeView" MouseEnter="viewmouseoverX" MouseLeave="viewmouseleaveX">
                     x
                 </Label>
@@ -44,18 +50,18 @@
         <Label DockPanel.Dock="Top" Content="Service"></Label>
         <Button DockPanel.Dock="Top" Margin="10,10" Content="Add task" Name="addTaskButton" Click="addButtonClick"></Button>
         <Label DockPanel.Dock="Top" Margin="10,0" Content="Filter by room"></Label>
-        <TextBox DockPanel.Dock="Top" Margin="10,0"></TextBox>
+        <TextBox DockPanel.Dock="Top" Margin="10,0" Name="roomFilter" PreviewTextInput="NumberValidationTextBox"></TextBox>
         <Button DockPanel.Dock="Bottom" Margin="10,10" Content="Main menu" Name="mainmenuButton"></Button>
         <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="taskList" ItemsSource="{Binding}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
-                        <Run Text="Task "/>
-                        <Run Text="{Binding id}"/>
-                        <Run Text=" at Room "/>
-                        <Run Text="{Binding room_id}"/>
-                        <Run Text=" of category "/>
-                        <Run Text="{Binding category}"/>
+                        <Run Text="Task id"/>
+                        <Run Text="{Binding myTask.id}"/>
+                        <Run Text="at Room"/>
+                        <Run Text="{Binding room_number}"/>
+                        <Run Text="of category"/>
+                        <Run Text="{Binding categories}"/>
                     </TextBlock>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

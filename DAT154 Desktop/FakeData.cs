@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DAT154_Desktop {
-    class FakeData{
+    class NotFakeData{
         public static List<DAT154_Libs.Task> getTasks() {
             List<DAT154_Libs.Task> taskList = new List<DAT154_Libs.Task>();
             taskList.Add(new DAT154_Libs.Task() {
@@ -19,7 +19,7 @@ namespace DAT154_Desktop {
                 id = 1,
                 room_id = 1,
                 status = 1,
-                category = 4,
+                category = 5,
                 notes = "This is a different task"
             });
             taskList.Add(new DAT154_Libs.Task() {

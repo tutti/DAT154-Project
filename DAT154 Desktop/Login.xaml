@@ -10,9 +10,10 @@
     <StackPanel>
         <TextBlock HorizontalAlignment="Center" Text="Front desk login"></TextBlock>
         <Label Margin="10,0" Content="Username"></Label>
-        <TextBox Margin="10,0" Name="usernameInput"></TextBox>
+        <TextBox Margin="10,0" Name="usernameInput" Text="test@test.com"></TextBox>
         <Label Margin="10,0" Content="Password"></Label>
-        <PasswordBox Margin="10,0" Name="passwordInput"></PasswordBox>
+        <PasswordBox Margin="10,0" Name="passwordInput" Password="abcdefg"></PasswordBox>
         <Button Margin="10,10" Name="loginButton" Content="Log in"></Button>
+        <Label Margin="10,10" Name="error" Content="" Foreground="Red"></Label>
     </StackPanel>
 </Page>
