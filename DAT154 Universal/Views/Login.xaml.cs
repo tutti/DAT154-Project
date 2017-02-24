@@ -4,6 +4,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Net.Http;
+using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -20,18 +21,10 @@ namespace DAT154_Universal.Views {
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e) {
-            int i = CheckServer(UsernameTextBox.Text, PasswordTextBox.Password);
-            if (i>-1){
-                writeToFile(i);
-            }else if(i==-1){
-                ErrorMessage.Text = "User not found";
-            }else {
-                ErrorMessage.Text = "Could not connect to server";
-            }
-            
+            CheckServer(UsernameTextBox.Text, PasswordTextBox.Password);
         }
 
-        private async int CheckServer(string username, string password) {
+        private async void CheckServer(string username, string password) {
 
 
             HttpClient httpClient = new HttpClient();
@@ -44,15 +37,18 @@ namespace DAT154_Universal.Views {
                 StreamReader sr = new StreamReader(ms);
                 var content = new StringContent(sr.ReadToEnd(), Encoding.UTF8, "application/json");
                 var result = await httpClient.PostAsync("localhost:1893", content);
-                
+                ms = new MemoryStream(Encoding.UTF8.GetBytes(result.Content.ToString()));
 
+                try {
+                    User response = (User)js.ReadObject(ms);
+                    writeToFile(response.type);
+                } catch {
+                    ErrorMessage.Text = "User not found";
+                }
+                
             } catch {
-                return -2;
+                ErrorMessage.Text = "Could not get connection";
             }
-            if (username == "Magnar" && password == "Gya") {
-                return 1;
-            }
-            return -1;
         }
 
         async void writeToFile(int type) {
@@ -75,16 +71,16 @@ namespace DAT154_Universal.Views {
         [DataMember]
         int id;
         [DataMember]
-        int type;
+        public int type;
         [DataMember]
         String name;
         [DataMember]
         public String email;
         [DataMember]
-        string Password;
+        string password;
         public User(string _username, string _password) {
             email = _username;
-            Password = _password;
+            password = _password;
         }
     }
 }
