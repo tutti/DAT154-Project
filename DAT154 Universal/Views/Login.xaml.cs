@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Windows.Storage;
+using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Net.Http;
@@ -31,19 +32,24 @@ namespace DAT154_Universal.Views {
 
             HttpClient httpClient = new HttpClient();
             try {
-                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(User));
                 var variables = new Dictionary<string, string> {
                     {"email",username },
                     {"password",password }
                 };  
                 var content = new FormUrlEncodedContent(variables);
                 var result = await httpClient.PostAsync("http://localhost:1893/api/login", content);
-                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(result.Content.ToString()));
 
                 try {
-                    User response = (User)js.ReadObject(ms);
-
-                    writeToFile(response.type);
+                    String data = await result.Content.ReadAsStringAsync();
+                    if (data.Contains("user")){ 
+                        string newdata = data.Substring(data.IndexOf("type\":"));
+                        string seconddata = newdata.Substring(newdata.IndexOf(':')+1);
+                        string lastdata = seconddata.Substring(0,seconddata.IndexOf(','));
+                        writeToFile(Convert.ToInt32(lastdata));
+                    } else {
+                        ErrorMessage.Text = "User not found";
+                    }
+                    
                 } catch {
                     ErrorMessage.Text = "User not found";
                 }
@@ -68,21 +74,5 @@ namespace DAT154_Universal.Views {
     }
 
 
-    [DataContract]
-    public class User {
-        [DataMember]
-        int id;
-        [DataMember]
-        public int type;
-        [DataMember]
-        String name;
-        [DataMember]
-        public String email;
-        [DataMember]
-        string password;
-        public User(string _username, string _password) {
-            email = _username;
-            password = _password;
-        }
-    }
+    
 }
