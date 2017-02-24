@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using DAT154_Libs;
+using System.Text.RegularExpressions;
 
 namespace DAT154_Desktop {
     /// <summary>
@@ -51,6 +52,17 @@ namespace DAT154_Desktop {
             }
             newroom.ItemsSource = rooms;
             newcategory.ItemsSource = categories;
+
+            // ----------- Events ----------------
+            //New task popup
+            newPopup.Opened += clearNewPopup;
+
+        }
+
+        private void clearNewPopup(object sender, EventArgs e) {
+            newcategory.SelectedIndex = 0;
+            newroom.SelectedIndex = 0;
+            newtext.Text = "";
         }
 
         private void addButtonClick(object sender, RoutedEventArgs e) {
@@ -92,6 +104,7 @@ namespace DAT154_Desktop {
             foreach (DAT154_Libs.Task _task in _tasks) {
                 tasks.Add(new TaskContainer(_task));
             }
+            taskList.ItemsSource = tasks;
         }
 
         public int getCategoryInt() {
@@ -105,6 +118,12 @@ namespace DAT154_Desktop {
 
                 default: return -1;
             }
+        }
+
+        
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e) {
+        Regex regex = new Regex("[^0-9]+");
+        e.Handled = regex.IsMatch(e.Text);
         }
     }
 

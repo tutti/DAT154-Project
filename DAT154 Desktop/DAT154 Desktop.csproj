@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataAccess.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="Service.xaml.cs">
       <DependentUpon>Service.xaml</DependentUpon>

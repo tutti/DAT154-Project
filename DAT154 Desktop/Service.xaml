@@ -50,7 +50,7 @@
         <Label DockPanel.Dock="Top" Content="Service"></Label>
         <Button DockPanel.Dock="Top" Margin="10,10" Content="Add task" Name="addTaskButton" Click="addButtonClick"></Button>
         <Label DockPanel.Dock="Top" Margin="10,0" Content="Filter by room"></Label>
-        <TextBox DockPanel.Dock="Top" Margin="10,0" Name="roomFilter"></TextBox>
+        <TextBox DockPanel.Dock="Top" Margin="10,0" Name="roomFilter" PreviewTextInput="NumberValidationTextBox"></TextBox>
         <Button DockPanel.Dock="Bottom" Margin="10,10" Content="Main menu" Name="mainmenuButton"></Button>
         <ListBox DockPanel.Dock="Bottom" Margin="10,10" Name="taskList" ItemsSource="{Binding}">
             <ItemsControl.ItemTemplate>

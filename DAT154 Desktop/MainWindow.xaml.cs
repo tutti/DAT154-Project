@@ -30,6 +30,19 @@ namespace DAT154_Desktop
             InitializeButtons();
             InitializeComponent();
             goLogin();
+
+            
+            /*for (int i = 1; i <= 3; i++) {
+                for (int j = 1; j <= 12; j++) {
+                    DAT154_Libs.Room room = new DAT154_Libs.Room();
+                    room.beds = 1 + (j % 3);
+                    room.quality = (j % 4);
+                    room.room_size = (3*j % 4);
+                    room.room_number = 100 * i + j;
+                    DAT154_Libs.Data.insert(room);
+                }
+            }
+            DAT154_Libs.Data.save();*/
         }
 
         public void InitializeButtons() {
@@ -54,7 +67,7 @@ namespace DAT154_Desktop
             //Service menu
             service.mainmenuButton.Click += new RoutedEventHandler(mainmenuButtonClick);
             service.newButton.Click += new RoutedEventHandler(submitButtonClick);
-            service.roomFilter.TextChanged += new TextChangedEventHandler(filterTaskList);
+            service.roomFilter.TextChanged += filterTaskList;
         }
 
         public void goLogin() {
@@ -68,6 +81,8 @@ namespace DAT154_Desktop
         public void loginButtonClick(object sender, EventArgs e) {
             if (dologin()) {
                 mainmenuButtonClick(sender, e);
+            } else {
+                login.error.Content = "Wrong username/password";
             }
         }
 
@@ -107,11 +122,15 @@ namespace DAT154_Desktop
 
         public void bookButtonClick(object sender, EventArgs e) {
             doBook();
-            booking.newbookingPopup.IsOpen = false;
         }
         public void filterBookingList(object sender, TextChangedEventArgs e) {
             //Get all users matching the name
-            List<DAT154_Libs.User> users = DAT154_Libs.Data.getUsersByName((string)booking.nameFilter.Text);
+            List<DAT154_Libs.User> users;
+            if (booking.nameFilter.Text != "") {
+                users = DAT154_Libs.Data.getUsersByName((string)booking.nameFilter.Text);
+            } else {
+                users = DAT154_Libs.Data.getAllUsers();
+            }
             List<DAT154_Libs.Booking> results = new List<DAT154_Libs.Booking>();
 
             //For each user, find their bookings, and for each of their bookings add it to the list
@@ -126,9 +145,14 @@ namespace DAT154_Desktop
         }
         public void filterTaskList(object sender, TextChangedEventArgs e) {
             //fetch new list filtered by room
-            int roomnumber = Convert.ToInt32(service.roomFilter.Text);
-            DAT154_Libs.Room room = DAT154_Libs.Data.getRoomByRoomNumber(roomnumber);
-            List<DAT154_Libs.Task> tasks = DAT154_Libs.Data.getTasks(room, null, null);
+            List<DAT154_Libs.Task> tasks;
+            if (service.roomFilter.Text != "") {
+                int roomnumber = Convert.ToInt32(service.roomFilter.Text);
+                DAT154_Libs.Room room = DAT154_Libs.Data.getRoomByRoomNumber(roomnumber);
+                tasks = DAT154_Libs.Data.getTasks(room, null, null);
+            } else {
+                tasks = DAT154_Libs.Data.getTasks(null, null, null);
+            }
 
             service.refreshTaskList(tasks);
         }
@@ -155,7 +179,11 @@ namespace DAT154_Desktop
             string password = login.passwordInput.Password;
 
             DAT154_Libs.User user = DAT154_Libs.Data.getUserByEmail(username);
-            return user.verifyPassword(password);
+            if (user != null) {
+                return user.verifyPassword(password);
+            } else {
+                return false;
+            }
         }
 
         public void doSubmitNewTask() {
@@ -165,6 +193,9 @@ namespace DAT154_Desktop
             task.room_id = ((DAT154_Libs.Room)service.newroom.SelectedItem).id;
 
             DAT154_Libs.Data.insert(task);
+            DAT154_Libs.Data.save();
+
+            filterTaskList(null, null);
         }
 
         public void doLogout() {
@@ -173,11 +204,23 @@ namespace DAT154_Desktop
 
         public void doBook() {
             DAT154_Libs.User user = DAT154_Libs.Data.getUserByEmail(booking.email.Text);
-            DateTime startdate = booking.startdate.SelectedDate.Value;
-            DateTime enddate = booking.startdate.SelectedDate.Value;
             DAT154_Libs.Room room = (DAT154_Libs.Room)booking.roomList.SelectedItem;
 
-            DAT154_Libs.Data.bookRoom(user,room,startdate,enddate);
+            if (user == null) {
+                booking.error.Content = "Invalid user";
+            } else if (room == null) {
+                booking.error.Content = "No room selected";
+            } else {
+                DateTime startdate = booking.startdate.SelectedDate.Value;
+                DateTime enddate = booking.enddate.SelectedDate.Value;
+
+
+                DAT154_Libs.Data.bookRoom(user, room, startdate, enddate);
+                DAT154_Libs.Data.save();
+                booking.newbookingPopup.IsOpen = false;
+            }
+
+            filterBookingList(null, null);
         }
 
         public void doCancel() {

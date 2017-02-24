@@ -39,7 +39,7 @@
                     </StackPanel>
                     <DockPanel Grid.Column="1" Width="100" Margin="10,10" >
                         <Button DockPanel.Dock="Bottom" Content="Book" Name="bookButton"></Button>
-                        <ListBox Name="roomList">
+                        <ListBox Name="roomList" MaxHeight="300">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Label Content="{Binding room_number}"/>
@@ -77,9 +77,9 @@
                         <Run Text="has Room"/>
                         <Run Text="{Binding room}"/>
                         <Run Text="from"/>
-                        <Run Text="{Binding myBooking.start_date, StringFormat='{}{0:dd/mm/yyyy}'}"/>
+                        <Run Text="{Binding myBooking.start_date, StringFormat='{}{0:dd/MM/yyyy}'}"/>
                         <Run Text="to"/>
-                        <Run Text="{Binding myBooking.end_date, StringFormat='{}{0:dd/mm/yyyy}'}"/>
+                        <Run Text="{Binding myBooking.end_date, StringFormat='{}{0:dd/MM/yyyy}'}"/>
                         <Run Text="- Status:"/>
                         <Run Text="{Binding status}"/>
                     </TextBlock>

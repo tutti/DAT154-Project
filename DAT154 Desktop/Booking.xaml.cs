@@ -68,10 +68,13 @@ namespace DAT154_Desktop {
             //Date selection
             startdate.SelectedDateChanged += dateChanged;
             enddate.SelectedDateChanged += dateChanged;
+
+            //Popup reset
+            newbookingPopup.Opened += clearNewPopup;
         }
 
         private void dateSanityCheck() {
-            if (enddate.SelectedDate < startdate.SelectedDate) {
+            if (enddate.SelectedDate <= startdate.SelectedDate) {
                 enddate.SelectedDate = startdate.SelectedDate.Value.AddDays(1);
             }
         }
@@ -85,6 +88,18 @@ namespace DAT154_Desktop {
         }
         private void closeBooking(object sender, MouseButtonEventArgs e) {
             newbookingPopup.IsOpen = false;
+        }
+
+        private void clearNewPopup(object sender, EventArgs e) {
+            email.Text = "";
+            roomquality.SelectedIndex = 0;
+            roomsize.SelectedIndex = 0;
+            bednumber.SelectedIndex = 0;
+            startdate.SelectedDate = DateTime.Today;
+            enddate.SelectedDate = startdate.SelectedDate.Value.AddDays(1);
+
+            rooms = new ObservableCollection<DAT154_Libs.Room>();
+            roomList.ItemsSource = rooms;
         }
 
         private void mouseoverX(object sender, MouseEventArgs e) {
@@ -121,6 +136,8 @@ namespace DAT154_Desktop {
             foreach (DAT154_Libs.Room _room in _rooms) {
                 rooms.Add(_room);
             }
+
+            roomList.ItemsSource = rooms;
         }
 
         public void refreshBookingList(List<DAT154_Libs.Booking> _bookings) {
@@ -129,6 +146,8 @@ namespace DAT154_Desktop {
             foreach (DAT154_Libs.Booking _booking in _bookings) {
                 bookings.Add(new BookingContainer(_booking));
             }
+
+            bookingList.ItemsSource = bookings;
         }
     }
 
