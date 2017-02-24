@@ -8,6 +8,8 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Collections.Generic;
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,18 +31,18 @@ namespace DAT154_Universal.Views {
 
             HttpClient httpClient = new HttpClient();
             try {
-                User u = new User(username,password);
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(User));
-                MemoryStream ms = new MemoryStream();
-                js.WriteObject(ms, u);
-                ms.Position = 0;
-                StreamReader sr = new StreamReader(ms);
-                var content = new StringContent(sr.ReadToEnd(), Encoding.UTF8, "application/json");
+                var variables = new Dictionary<string, string> {
+                    {"email",username },
+                    {"password",password }
+                };  
+                var content = new FormUrlEncodedContent(variables);
                 var result = await httpClient.PostAsync("http://localhost:1893/api/login", content);
-                ms = new MemoryStream(Encoding.UTF8.GetBytes(result.Content.ToString()));
+                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(result.Content.ToString()));
 
                 try {
                     User response = (User)js.ReadObject(ms);
+
                     writeToFile(response.type);
                 } catch {
                     ErrorMessage.Text = "User not found";
