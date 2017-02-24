@@ -9,8 +9,8 @@
 
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-            <Grid VerticalAlignment="Top" Background="DodgerBlue">
+        <Grid VerticalAlignment="Top">
+            <Grid VerticalAlignment="Top" Background="DodgerBlue" Margin="0,0,0,0">
                 <ComboBox x:Name="job_type_list" Height="30" Foreground="White" SelectionChanged="JobTypeChange">
                     <ComboBoxItem Content="Cleaner"></ComboBoxItem>
                     <ComboBoxItem Content="Service"></ComboBoxItem>
@@ -22,14 +22,14 @@
                 <TextBlock Text="Task List" HorizontalAlignment="Center" FontSize="22" Foreground="White"/>
                 <Button x:Name="refreshButton" HorizontalAlignment="Right" Foreground="White" Click="refreshButton_clicked" Content="Refresh"/>
             </Grid>
-            <Border BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" VerticalAlignment="Top">
+            <Border BorderBrush="DodgerBlue" BorderThickness="0 0 0 1" VerticalAlignment="Top" Margin="0,32">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Room Number" Width="125"/>
                     <TextBlock Text="Status" Width="165"/>
                     <TextBlock Text="Notes"/>
                 </StackPanel>
             </Border>
-            <ListView Name="TaskList">
+            <ListView Name="TaskList" Margin="0,55">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -44,6 +44,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>
