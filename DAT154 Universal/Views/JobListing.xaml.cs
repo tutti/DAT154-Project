@@ -64,7 +64,7 @@ namespace DAT154_Universal.Views {
                     {"category",job_type.ToString() }
                 };
                 var content = new FormUrlEncodedContent(variables);
-                var result = await httpClient.PostAsync("http://localhost:1893/api/getTask", content);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/searchTask", content);
                 parseJSON(await result.Content.ReadAsStringAsync());
             } catch {
 
