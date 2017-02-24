@@ -215,7 +215,7 @@ namespace DAT154_Libs {
             if (status != null && status != 0) {
                 query = query.Where(task => (task.status & status) > 0);
             }
-            if (category != null && status != 0) {
+            if (category != null && category != 0) {
                 query = query.Where(task => (task.category & category) == category);
             }
 
