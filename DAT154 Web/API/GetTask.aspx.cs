@@ -13,15 +13,10 @@ namespace DAT154_Web.API {
         protected string json = "";
         protected void Page_Load(object sender, EventArgs e) {
             if (HttpContext.Current.Request.HttpMethod == "POST") {
-                string token = HttpContext.Current.Request["token"];
-                string task_id = HttpContext.Current.Request["task_id"];
-
-                if (Application["api:token-" + token] == null) {
-                    json = JsonConvert.SerializeObject(new { status = "ERROR", error = "Invalid user token." });
-                    return;
-                }
-
-                Task task = Data.getTaskById(Convert.ToInt32(task_id));
+                string category = HttpContext.Current.Request["category"];
+                
+                List<Task> task = Data.getTasks(null,1,Convert.ToInt32(category));
+                List<Task> task2 = Data.getTasks(null, 2, Convert.ToInt32(category));
 
                 json = JsonConvert.SerializeObject(new { status = "OK", task = task });
                 
