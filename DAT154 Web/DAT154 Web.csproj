@@ -169,6 +169,10 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="API\GetTask.aspx" />
+    <Content Include="API\Login.aspx" />
+    <Content Include="API\SaveTask.aspx" />
+    <Content Include="API\SearchTasks.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -334,6 +338,34 @@
     </Compile>
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="API\GetTask.aspx.cs">
+      <DependentUpon>GetTask.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="API\GetTask.aspx.designer.cs">
+      <DependentUpon>GetTask.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="API\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="API\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="API\SaveTask.aspx.cs">
+      <DependentUpon>SaveTask.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="API\SaveTask.aspx.designer.cs">
+      <DependentUpon>SaveTask.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="API\SearchTasks.aspx.cs">
+      <DependentUpon>SearchTasks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="API\SearchTasks.aspx.designer.cs">
+      <DependentUpon>SearchTasks.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
