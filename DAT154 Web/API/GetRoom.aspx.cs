@@ -8,15 +8,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace DAT154_Web.API {
-    public partial class GetTask : System.Web.UI.Page {
-
+    public partial class GetRoom : System.Web.UI.Page {
+        
         protected string json = "";
+
         protected void Page_Load(object sender, EventArgs e) {
-            string task_id = HttpContext.Current.Request["task_id"];
+            string room_id = HttpContext.Current.Request["room_id"];
 
-            Task task = Data.getTaskById(Convert.ToInt32(task_id));
+            Room room = Data.getRoomById(Convert.ToInt32(room_id));
 
-            json = JsonConvert.SerializeObject(new { status = "OK", task = task });
+            json = JsonConvert.SerializeObject(new { status = "OK", room = room });
         }
     }
 }

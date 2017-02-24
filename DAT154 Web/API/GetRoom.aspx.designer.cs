@@ -10,6 +10,6 @@
 namespace DAT154_Web.API {
     
     
-    public partial class SaveTask {
+    public partial class GetRoom {
     }
 }

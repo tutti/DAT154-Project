@@ -169,6 +169,7 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="API\GetRoom.aspx" />
     <Content Include="API\GetTask.aspx" />
     <Content Include="API\Login.aspx" />
     <Content Include="API\SaveTask.aspx" />
@@ -338,6 +339,13 @@
     </Compile>
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="API\GetRoom.aspx.cs">
+      <DependentUpon>GetRoom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="API\GetRoom.aspx.designer.cs">
+      <DependentUpon>GetRoom.aspx</DependentUpon>
     </Compile>
     <Compile Include="API\GetTask.aspx.cs">
       <DependentUpon>GetTask.aspx</DependentUpon>
