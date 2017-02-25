@@ -12,7 +12,6 @@ namespace DAT154_Web {
         protected List<string> errors = new List<string>();
         protected void Page_Load(object sender, EventArgs e) {
             errorList.DataSource = errors;
-            errorList.DataBind();
 
             if (HttpContext.Current.Request.HttpMethod == "POST") {
                 string s_minBeds = HttpContext.Current.Request["ctl00$MainContent$minBeds"];
@@ -27,6 +26,7 @@ namespace DAT154_Web {
                 if (s_startDate == null || s_startDate.Equals("")
                     || s_endDate == null || s_endDate.Equals("")) {
                     errors.Add("You must date! Or no hotel!");
+                    errorList.DataBind();
                     return;
                 }
 
@@ -59,6 +59,7 @@ namespace DAT154_Web {
 
                 if (rooms.Count() == 0) {
                     errors.Add("Apologise we, not available rooms. Search other please.");
+                    errorList.DataBind();
                 } else {
                     Response.Redirect(
                         "/SearchResults?r=" + rooms[0].id + "&s=" + s_startDate + "&e=" + s_endDate
@@ -66,8 +67,9 @@ namespace DAT154_Web {
                 }
             }
 
-            if (HttpContext.Current.Request["ctl00$MainContent$minBeds"] != null) {
+            else if (HttpContext.Current.Request["ctl00$MainContent$minBeds"] != null) {
                 errors.Add("Apologise we, not available rooms. Search other please.");
+                errorList.DataBind();
             }
         }
     }
