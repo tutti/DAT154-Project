@@ -41,7 +41,7 @@ namespace DAT154_Web {
                 // Check bookings just in case
                 DateTime _startDate = DateTime.Parse(startDate);
                 DateTime _endDate = DateTime.Parse(endDate);
-                List<Booking> bookings = Data.getBookings(room: foundRoom, startDate: _startDate, endDate: _endDate);
+                List<Booking> bookings = Data.getBookings(room: foundRoom, startDate: _startDate, endDate: _endDate, includeCanceled: false);
 
                 if (bookings.Count() > 0) {
                     error = true;
