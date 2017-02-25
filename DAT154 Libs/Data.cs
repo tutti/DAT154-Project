@@ -212,10 +212,10 @@ namespace DAT154_Libs {
 
             if (room != null) query = from task in query where task.room_id == room.id select task;
             //if (status != null) query = from task in query where task.status == status select task;
-            if (status != null) {
+            if (status != null && status != 0) {
                 query = query.Where(task => (task.status & status) > 0);
             }
-            if (category != null) {
+            if (category != null && category != 0) {
                 query = query.Where(task => (task.category & category) == category);
             }
 

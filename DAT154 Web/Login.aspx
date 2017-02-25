@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="DAT154_Web.WebForm1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h1>Log in</h1>
+    <h1>Log for in</h1>
 
     <asp:Repeater ID="errorList" runat="server">
         <ItemTemplate>

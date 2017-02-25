@@ -29,18 +29,18 @@ namespace DAT154_Web.API {
                     return;
                 }
 
-                string token;
+                /*string token;
 
                 using (RandomNumberGenerator rng = new RNGCryptoServiceProvider()) {
                     byte[] tokenData = new byte[32];
                     rng.GetBytes(tokenData);
 
                     token = Convert.ToBase64String(tokenData);
-                }
+                }*/
 
-                json = JsonConvert.SerializeObject(new { status = "OK", token = token, user = user });
+                json = JsonConvert.SerializeObject(new { status = "OK", user = user });
 
-                Application["api:token-" + token] = user;
+                //Application["api:token-" + token] = user;
             } else {
                 json = JsonConvert.SerializeObject(new { status = "ERROR", error = "Request must be POST." });
             }
