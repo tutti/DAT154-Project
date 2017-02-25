@@ -41,7 +41,11 @@ namespace DAT154_Web
                     Data.insert(user);
                     Data.save();
                     Session["user"] = user;
-                    Response.Redirect("~/");
+                    if (Session["reserved_room_id"] != null) {
+                        Response.Redirect("/SearchResults");
+                    } else {
+                        Response.Redirect("/");
+                    }
                 }
             }
             
