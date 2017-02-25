@@ -1,9 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="DAT154_Web.Search" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <% if(error) { %>
-        <span style="color: red;">Apologise we, not available rooms. Search other please.</span>
-    <% } %>
+    <asp:Repeater ID="errorList" runat="server">
+        <ItemTemplate>
+            <span style="color: red;"><%# Container.DataItem %></span><br />
+        </ItemTemplate>
+    </asp:Repeater>
 
     <style>
         .label {
