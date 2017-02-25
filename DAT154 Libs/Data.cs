@@ -94,6 +94,7 @@ namespace DAT154_Libs {
                     from booking in bookingTbl
                     where booking.start_date < endDate
                     where booking.end_date > startDate
+                    where booking.booking_status != Booking.STATUS.CANCELED
                     select booking.room_id;
 
                 List<int> bookedRooms = bookingQuery.ToList<int>();
