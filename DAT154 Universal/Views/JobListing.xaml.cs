@@ -51,6 +51,8 @@ namespace DAT154_Universal.Views {
                     break;
                 case 32: job_type_index = 5;
                     break;
+                default: job_type_index = 0;
+                        break;
             }
             job_type_list.SelectedIndex = job_type_index;
             a = new List<TaskView>();
@@ -64,7 +66,7 @@ namespace DAT154_Universal.Views {
                     {"category",job_type.ToString() }
                 };
                 var content = new FormUrlEncodedContent(variables);
-                var result = await httpClient.PostAsync("http://localhost:1893/api/searchTask", content);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/searchTasks", content);
                 parseJSON(await result.Content.ReadAsStringAsync());
             } catch {
 
@@ -119,15 +121,43 @@ namespace DAT154_Universal.Views {
         }
 
         public void parseJSON(string JSON) {
-            testName.Text = JSON;
+            string list = JSON.Substring(JSON.IndexOf("[")+1);
+            a = new List<TaskView>();
+            while (list.Contains(":")) {
+                string id = list.Substring(list.IndexOf(":")+1);
+                id = id.Substring(0, id.IndexOf(","));
+                list = list.Substring(list.IndexOf(",") + 1);
+
+                string roomid = list.Substring(list.IndexOf(":") + 1);
+                roomid = roomid.Substring(0, roomid.IndexOf(","));
+                list = list.Substring(list.IndexOf(",") + 1);
+
+                string status = list.Substring(list.IndexOf(":") + 1);
+                status = status.Substring(0, status.IndexOf(","));
+                list = list.Substring(list.IndexOf(",") + 1);
+
+                string category = list.Substring(list.IndexOf(":") + 1);
+                category = category.Substring(0, category.IndexOf(","));
+                list = list.Substring(list.IndexOf(",") + 1);
+
+                string notes = list.Substring(list.IndexOf(":") + 1);
+                notes = notes.Substring(notes.IndexOf("\""));
+                notes = notes.Substring(0, notes.IndexOf("\""));
+                if (list.Contains(",")) {
+                    list = list.Substring(list.IndexOf(",") + 1);
+                } else {
+                    list = "";
+                }
+                a.Add(new TaskView(Convert.ToInt32(id), Convert.ToInt32(roomid), Convert.ToInt32(status), Convert.ToInt32(category), notes));
+            }
         }
     }
 
     public class TaskView {
-        public MockTasks task { get; set; }
+        public Task task { get; set; }
         public Room room { get; set; }
         public TaskView(int _id, int _room_id, int _status, int _category, string _notes) {
-            task = new MockTasks(_id, _room_id, _status, _category, _notes);
+            task = new Task(_id, _room_id, _status, _category, _notes);
             room = new Room(_room_id);
         }
 
@@ -139,10 +169,29 @@ namespace DAT154_Universal.Views {
         public int room_number { get; set; }
         public Room(int _room_id) {
             room_id = _room_id;
-            room_number = _room_id;
+            getRoomNumber(_room_id);
+        }
+
+        public async void getRoomNumber(int _room_id) {
+            HttpClient httpClient = new HttpClient();
+            try {
+                var variables = new Dictionary<string, string> {
+                    {"room_id",_room_id.ToString() }
+                };
+                var content = new FormUrlEncodedContent(variables);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/getRoom", content);
+                parseRoom(await result.Content.ReadAsStringAsync());
+            } catch {
+
+            }
+        }
+        public void parseRoom (string JSON) {
+            string list = JSON;
+        }
+
         }
     }
-    public class MockTasks {
+    public class Task {
         public class STATUS {
             public static readonly int CANCELED = -1;
             public static readonly int NEW = 0;
@@ -159,7 +208,7 @@ namespace DAT154_Universal.Views {
             public static readonly int EXORCISM = 32;
         }
 
-        public MockTasks(int _id, int _room_id, int _status, int _category, string _notes) {
+        public Task(int _id, int _room_id, int _status, int _category, string _notes) {
             id = _id;
             room_id = _room_id;
             status = _status;
@@ -180,4 +229,4 @@ namespace DAT154_Universal.Views {
             return (this.category & category) == category;
         }
     }
-}
+
