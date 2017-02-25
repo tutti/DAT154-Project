@@ -164,7 +164,8 @@ namespace DAT154_Libs {
             User user = null,
             Room room = null,
             DateTime? startDate = null,
-            DateTime? endDate = null
+            DateTime? endDate = null,
+            bool includeCanceled = true
         ) {
             Table<Booking> tbl = cont.GetTable<Booking>();
 
@@ -173,6 +174,7 @@ namespace DAT154_Libs {
             if (user != null) query = from booking in query where booking.user_id == user.id select booking;
             if (room != null) query = from booking in query where booking.room_id == room.id select booking;
             if (startDate != null && endDate != null) query = from booking in query where booking.start_date < endDate where booking.end_date > startDate select booking;
+            if (!includeCanceled) query = from booking in query where booking.booking_status != Booking.STATUS.CANCELED select booking;
 
             return query.ToList<Booking>();
         }
