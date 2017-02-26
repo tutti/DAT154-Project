@@ -9,8 +9,10 @@ using System.Web.UI.WebControls;
 namespace DAT154_Web {
     public partial class Search : System.Web.UI.Page {
 
-        protected bool error = false;
+        protected List<string> errors = new List<string>();
         protected void Page_Load(object sender, EventArgs e) {
+            errorList.DataSource = errors;
+
             if (HttpContext.Current.Request.HttpMethod == "POST") {
                 string s_minBeds = HttpContext.Current.Request["ctl00$MainContent$minBeds"];
                 string s_maxBeds = HttpContext.Current.Request["ctl00$MainContent$maxBeds"];
@@ -21,14 +23,19 @@ namespace DAT154_Web {
                 string s_startDate = HttpContext.Current.Request["ctl00$MainContent$startDate"];
                 string s_endDate = HttpContext.Current.Request["ctl00$MainContent$endDate"];
 
+                if (s_startDate == null || s_startDate.Equals("")
+                    || s_endDate == null || s_endDate.Equals("")) {
+                    errors.Add("You must date! Or no hotel!");
+                    errorList.DataBind();
+                    return;
+                }
+
                 int minBeds = -1;
                 int maxBeds = -1;
                 int minSize = -1;
                 int maxSize = -1;
                 int minQuality = -1;
                 int maxQuality = -1;
-                DateTime? startDate = null;
-                DateTime? endDate = null;
 
                 if (s_minBeds != null && !s_minBeds.Equals("")) minBeds = Convert.ToInt32(s_minBeds);
                 if (s_maxBeds != null && !s_maxBeds.Equals("")) maxBeds = Convert.ToInt32(s_maxBeds);
@@ -36,8 +43,8 @@ namespace DAT154_Web {
                 if (s_maxSize != null && !s_maxSize.Equals("")) maxSize = Convert.ToInt32(s_maxSize);
                 if (s_minQuality != null && !s_minQuality.Equals("")) minQuality = Convert.ToInt32(s_minQuality);
                 if (s_maxQuality != null && !s_maxQuality.Equals("")) maxQuality = Convert.ToInt32(s_maxQuality);
-                if (s_startDate != null && !s_startDate.Equals("")) startDate = DateTime.Parse(s_startDate);
-                if (s_endDate != null && !s_endDate.Equals("")) endDate = DateTime.Parse(s_endDate);
+                DateTime startDate = DateTime.Parse(s_startDate);
+                DateTime endDate = DateTime.Parse(s_endDate);
 
                 List<Room> rooms = Data.getRooms(
                     minBeds: minBeds,
@@ -51,7 +58,8 @@ namespace DAT154_Web {
                 );
 
                 if (rooms.Count() == 0) {
-                    error = true;
+                    errors.Add("Apologise we, not available rooms. Search other please.");
+                    errorList.DataBind();
                 } else {
                     Response.Redirect(
                         "/SearchResults?r=" + rooms[0].id + "&s=" + s_startDate + "&e=" + s_endDate
@@ -59,8 +67,9 @@ namespace DAT154_Web {
                 }
             }
 
-            if (HttpContext.Current.Request["ctl00$MainContent$minBeds"] != null) {
-                error = true;
+            else if (HttpContext.Current.Request["ctl00$MainContent$minBeds"] != null) {
+                errors.Add("Apologise we, not available rooms. Search other please.");
+                errorList.DataBind();
             }
         }
     }

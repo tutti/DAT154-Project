@@ -15,7 +15,9 @@
     <%= foundRoom.quality %>
     <br />
 
-    <asp:HiddenField ID="room_id" runat="server" Value="<%# foundRoom.id %>" />
+    <asp:HiddenField ID="room_id" runat="server" value="<%# foundRoom.id %>" />
+    <asp:HiddenField ID="start_date" runat="server" value="<%# startDate %>" />
+    <asp:HiddenField ID="end_date" runat="server" value="<%# endDate %>" />
 
     <asp:Button ID="nope" runat="server" Text="Unacceptable!" PostBackUrl="~/Search.aspx" />
     <asp:Button ID="yup" runat="server" Text="Is good!" />

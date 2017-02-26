@@ -29,7 +29,12 @@ namespace DAT154_Web
 
                 if (errors.Count() == 0) {
                     Session["user"] = user;
-                    Response.Redirect("~/");
+
+                    if (Session["reserved_room_id"] != null) {
+                        Response.Redirect("/SearchResults");
+                    } else {
+                        Response.Redirect("/");
+                    }
                 }
             }
 
