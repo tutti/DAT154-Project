@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -35,27 +36,35 @@ namespace DAT154_Universal.Views {
                 StorageFile file = await tempFolder.GetFileAsync("user.txt");
                 String user = await FileIO.ReadTextAsync(file);
                 job_type = Int32.Parse(user);
-            }catch {
+            } catch {
                 job_type = 1;
             }
             switch (job_type) {
-                case 1: job_type_index = 0;
+                case 1:
+                    job_type_index = 0;
                     break;
-                case 2: job_type_index = 1;
+                case 2:
+                    job_type_index = 1;
                     break;
-                case 4: job_type_index = 2;
+                case 4:
+                    job_type_index = 2;
                     break;
-                case 8: job_type_index = 3;
+                case 8:
+                    job_type_index = 3;
                     break;
-                case 16: job_type_index = 4;
+                case 16:
+                    job_type_index = 4;
                     break;
-                case 32: job_type_index = 5;
+                case 32:
+                    job_type_index = 5;
                     break;
-                default: job_type_index = 0;
-                        break;
+                default:
+                    job_type_index = 0;
+                    break;
             }
             job_type_list.SelectedIndex = job_type_index;
             a = new List<TaskView>();
+            System.Threading.Tasks.Task.Delay(10).Wait();
             checkServer(job_type);
         }
 
@@ -63,7 +72,9 @@ namespace DAT154_Universal.Views {
             HttpClient httpClient = new HttpClient();
             try {
                 var variables = new Dictionary<string, string> {
-                    {"category",job_type.ToString() }
+                    
+                    {"category",job_type.ToString() },
+                    {"status", "0" }
                 };
                 var content = new FormUrlEncodedContent(variables);
                 var result = await httpClient.PostAsync("http://localhost:1893/api/searchTasks", content);
@@ -71,11 +82,12 @@ namespace DAT154_Universal.Views {
             } catch {
 
             }
-                
-                TaskList.ItemsSource = a;
+            System.Threading.Tasks.Task.Delay(500).Wait();
+            TaskList.ItemsSource = a;
         }
+        
 
-        public void refreshButton_clicked(object  sender, RoutedEventArgs args) {
+        public void refreshButton_clicked(object sender, RoutedEventArgs args) {
             TaskList.ItemsSource = null;
             TaskList.Items.Clear();
             checkServer(job_type);
@@ -84,20 +96,26 @@ namespace DAT154_Universal.Views {
         public void JobTypeChange(object sender, SelectionChangedEventArgs args) {
             job_type_index = job_type_list.SelectedIndex;
             switch (job_type_index) {
-                case 0: job_type = 1;
+                case 0:
+                    job_type = 1;
                     break;
-                case 1: job_type = 2;
+                case 1:
+                    job_type = 2;
                     break;
-                case 2: job_type = 4;
+                case 2:
+                    job_type = 4;
                     break;
-                case 3: job_type = 8;
+                case 3:
+                    job_type = 8;
                     break;
-                case 4: job_type = 16;
+                case 4:
+                    job_type = 16;
                     break;
-                case 5: job_type = 32;
+                case 5:
+                    job_type = 32;
                     break;
             }
-            
+
             TaskList.ItemsSource = null;
             TaskList.Items.Clear();
             checkServer(job_type);
@@ -109,22 +127,43 @@ namespace DAT154_Universal.Views {
             if (tv != null) {
                 tv.task.status = newStatus;
             }
+
         }
 
         public void UpdateNote(object sender, TextChangedEventArgs args) {
             var textBox = (TextBox)sender;
-            string newNote =textBox.Text;
+            string newNote = textBox.Text;
             TaskView tv = (TaskView)textBox.DataContext;
-            if(tv != null) {
+            if (tv != null) {
                 tv.task.notes = newNote;
+            }
+        }
+        public async void updateServer(object sender, RoutedEventArgs args) {
+            var button = (Button)sender;
+            TaskView taskview = (TaskView)button.DataContext;
+
+            HttpClient httpClient = new HttpClient();
+            try {
+                var variables = new Dictionary<string, string> {
+                    {"task_id",taskview.task.id.ToString() },
+                    {"room_id",taskview.room.room_id.ToString() },
+                    {"status", taskview.task.status.ToString() },
+                    {"category", taskview.task.category.ToString() },
+                    {"notes", taskview.task.notes }
+                };
+                var content = new FormUrlEncodedContent(variables);
+                var result = await httpClient.PostAsync("http://localhost:1893/api/saveTask", content);
+            } catch {
+
             }
         }
 
         public void parseJSON(string JSON) {
-            string list = JSON.Substring(JSON.IndexOf("[")+1);
+
+            string list = JSON.Substring(JSON.IndexOf("[") + 1);
             a = new List<TaskView>();
             while (list.Contains(":")) {
-                string id = list.Substring(list.IndexOf(":")+1);
+                string id = list.Substring(list.IndexOf(":") + 1);
                 id = id.Substring(0, id.IndexOf(","));
                 list = list.Substring(list.IndexOf(",") + 1);
 
@@ -141,7 +180,7 @@ namespace DAT154_Universal.Views {
                 list = list.Substring(list.IndexOf(",") + 1);
 
                 string notes = list.Substring(list.IndexOf(":") + 1);
-                notes = notes.Substring(notes.IndexOf("\""));
+                notes = notes.Substring(notes.IndexOf("\"")+1);
                 notes = notes.Substring(0, notes.IndexOf("\""));
                 if (list.Contains(",")) {
                     list = list.Substring(list.IndexOf(",") + 1);
@@ -149,7 +188,9 @@ namespace DAT154_Universal.Views {
                     list = "";
                 }
                 a.Add(new TaskView(Convert.ToInt32(id), Convert.ToInt32(roomid), Convert.ToInt32(status), Convert.ToInt32(category), notes));
+
             }
+            
         }
     }
 
@@ -161,7 +202,7 @@ namespace DAT154_Universal.Views {
             room = new Room(_room_id);
         }
 
-     
+
     }
 
     public class Room {
@@ -172,7 +213,7 @@ namespace DAT154_Universal.Views {
             getRoomNumber(_room_id);
         }
 
-        public async void getRoomNumber(int _room_id) {
+        async void getRoomNumber(int _room_id) {
             HttpClient httpClient = new HttpClient();
             try {
                 var variables = new Dictionary<string, string> {
@@ -185,12 +226,15 @@ namespace DAT154_Universal.Views {
 
             }
         }
-        public void parseRoom (string JSON) {
-            string list = JSON;
+        public void parseRoom(string JSON) {
+            string list = JSON.Substring(JSON.IndexOf("room_number"));
+            list = list.Substring(list.IndexOf(":") + 1);
+            list = list.Substring(0, list.IndexOf(","));
+            room_number = Convert.ToInt32(list);
         }
 
-        }
     }
+
     public class Task {
         public class STATUS {
             public static readonly int CANCELED = -1;
@@ -211,22 +255,33 @@ namespace DAT154_Universal.Views {
         public Task(int _id, int _room_id, int _status, int _category, string _notes) {
             id = _id;
             room_id = _room_id;
+            switch (_status) {
+                case 1: status = -1;
+                    break;
+                case 2: status = 0;
+                    break;
+                case 4: status = 1;
+                    break;
+                case 8: status = 2;
+                    break;
+            }
             status = _status;
             category = _category;
             notes = _notes;
         }
         public int id { get; set; }
-        
+
         public int room_id { get; set; }
-        
+
         public int status { get; set; }
-        
+
         public int category { get; set; }
-        
+
         public string notes { get; set; }
 
         public bool isCategory(int category) {
             return (this.category & category) == category;
         }
     }
+}
 
