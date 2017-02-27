@@ -11,7 +11,7 @@
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <TextBlock Text="Login" FontSize="36" Margin="4" TextAlignment="Center"/>
             <TextBlock x:Name="ErrorMessage" Text="" FontSize="20" Margin="4" Foreground="Red" TextAlignment="Center"/>
-            <TextBlock Text="Enter your username below:" FontSize="20" Margin="0,0,0,10" TextWrapping="Wrap" Width="300" TextAlignment="Center"/>
+            <TextBlock Text="Enter your email below:" FontSize="20" Margin="0,0,0,10" TextWrapping="Wrap" Width="300" TextAlignment="Center"/>
             <TextBox x:Name="UsernameTextBox" Margin="4" Width="250" />
             <TextBlock Text="Enter your password below:" FontSize="20" Margin="0,0,0,10" TextWrapping="Wrap" Width="300" TextAlignment="Center"/>
             <PasswordBox x:Name="PasswordTextBox" Margin="4" Width="250"/>
