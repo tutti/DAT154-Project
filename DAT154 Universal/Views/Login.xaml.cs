@@ -28,8 +28,6 @@ namespace DAT154_Universal.Views {
         }
 
         private async void CheckServer(string username, string password) {
-
-
             HttpClient httpClient = new HttpClient();
             try {
                 var variables = new Dictionary<string, string> {
@@ -55,7 +53,7 @@ namespace DAT154_Universal.Views {
                 }
                 
             } catch {
-                ErrorMessage.Text = "Could not get connection";
+                ErrorMessage.Text = "Could not connect to server";
             }
         }
 

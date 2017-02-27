@@ -188,7 +188,6 @@ namespace DAT154_Universal.Views {
                     list = "";
                 }
                 a.Add(new TaskView(Convert.ToInt32(id), Convert.ToInt32(roomid), Convert.ToInt32(status), Convert.ToInt32(category), notes));
-
             }
             
         }
