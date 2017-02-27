@@ -69,6 +69,8 @@ namespace DAT154_Universal.Views {
         }
 
         async void checkServer(int job_type) {
+            refreshButton.IsEnabled = false;
+            job_type_list.IsEnabled = false;
             HttpClient httpClient = new HttpClient();
             try {
                 var variables = new Dictionary<string, string> {
@@ -84,6 +86,8 @@ namespace DAT154_Universal.Views {
             }
             System.Threading.Tasks.Task.Delay(600).Wait();
             TaskList.ItemsSource = a;
+            job_type_list.IsEnabled = true;
+            refreshButton.IsEnabled = true;
         }
         
 

@@ -24,6 +24,7 @@ namespace DAT154_Universal.Views {
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e) {
+            SignInButton.IsEnabled = false;
             CheckServer(UsernameTextBox.Text, PasswordTextBox.Password);
         }
 
@@ -55,10 +56,11 @@ namespace DAT154_Universal.Views {
             } catch {
                 ErrorMessage.Text = "Could not connect to server";
             }
+            SignInButton.IsEnabled = true;
         }
 
         async void writeToFile(int type) {
-            if (type != 0) {
+            if(type != 0) {
                 StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
                 StorageFile userType;
                 try {
@@ -71,6 +73,7 @@ namespace DAT154_Universal.Views {
             }else {
                 ErrorMessage.Text = "User is not a worker";
             }
+            SignInButton.IsEnabled = true;
         }
         
     }
