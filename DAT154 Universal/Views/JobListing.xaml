@@ -40,7 +40,7 @@
                                 <ComboBoxItem>Completed</ComboBoxItem>
                             </ComboBox>
                             <TextBox Text="{Binding task.notes}" Width="140" TextChanged="UpdateNote"/>
-                            <Button Width="80" Click="updateServer">Submit changes</Button>
+                            <Button Width="120" Click="updateServer">Submit changes</Button>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
