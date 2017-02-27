@@ -82,7 +82,7 @@ namespace DAT154_Universal.Views {
             } catch {
 
             }
-            System.Threading.Tasks.Task.Delay(500).Wait();
+            System.Threading.Tasks.Task.Delay(600).Wait();
             TaskList.ItemsSource = a;
         }
         

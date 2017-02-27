@@ -60,15 +60,19 @@ namespace DAT154_Universal.Views {
         }
 
         async void writeToFile(int type) {
-            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-            StorageFile userType;
-            try {
-                userType = await tempFolder.CreateFileAsync("user.txt");
-            } catch {
-                userType = await tempFolder.GetFileAsync("user.txt");
+            if (type != 0) {
+                StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+                StorageFile userType;
+                try {
+                    userType = await tempFolder.CreateFileAsync("user.txt");
+                } catch {
+                    userType = await tempFolder.GetFileAsync("user.txt");
+                }
+                await FileIO.WriteTextAsync(userType, type.ToString());
+                Frame.Navigate(typeof(JobListing));
+            }else {
+                ErrorMessage.Text = "User is not a worker";
             }
-            await FileIO.WriteTextAsync(userType, type.ToString());
-            Frame.Navigate(typeof(JobListing));
         }
         
     }
